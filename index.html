@@ -42,8 +42,8 @@ body{font-family:'Nunito',sans-serif;background:#000;color:var(--dark);overflow-
 .msec{text-align:center;margin:20px 0 14px}.msec-i{font-size:22px;display:block;margin-bottom:2px}.msec-l{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--felt)}
 .nd{display:none}.nd:active{transform:scale(.92)}
 .map-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;transition:.2s;z-index:5;transform:translate(-50%,-50%)}.map-node:active{transform:translate(-50%,-50%) scale(.85)}
-.map-node .node-label{font-size:8px;font-weight:700;white-space:nowrap;color:rgba(255,255,255,0.8);text-shadow:0 1px 3px rgba(0,0,0,0.9);text-align:center;letter-spacing:0.5px}
-.map-node .node-check,.map-node .node-lock,.map-node .node-sym{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;transition:.2s}
+.map-node .node-label{font-size:9px;font-weight:700;white-space:nowrap;color:rgba(255,255,255,0.8);text-shadow:0 1px 3px rgba(0,0,0,0.9);text-align:center;letter-spacing:0.5px}
+.map-node .node-check,.map-node .node-lock,.map-node .node-sym{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;transition:.2s}
 .map-node.completed .node-check{background:linear-gradient(145deg,#4ade80,#16a34a);color:#fff;box-shadow:0 0 10px rgba(34,197,94,0.5)}
 .map-node.completed .node-label{color:#4ade80}
 .map-node.available .node-sym{background:rgba(255,255,255,0.9);color:#1a1a2e;box-shadow:0 0 12px rgba(255,255,255,0.4);animation:pulse 2s infinite}
@@ -550,7 +550,7 @@ function updateRank(){
   document.getElementById('rChips2').textContent=G.chips;
 }
 function buildDrills(){
-  let html='';MAP.forEach(sec=>{sec.ls.forEach(l=>{if(L[l.id])html+=`<div style="background:var(--card);padding:14px 16px;border-radius:14px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:12px;margin-bottom:8px" onclick="startL('${l.id}')"><span style="font-size:24px">${l.ic}</span><div style="flex:1"><div style="font-weight:700;font-size:14px">${l.n}</div><div style="font-size:11px;color:var(--gray)">${l.q} questions • ${isDue(l.id)?'Due now':'Review later'}</div></div><span style="color:var(--felt);font-weight:800;font-size:13px">Play →</span></div>`})});
+  let html='';MAP.forEach(sec=>{sec.ls.forEach(l=>{if(L[l.id])html+=`<div style="background:var(--card);padding:18px 20px;border-radius:16px;border:2px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:14px;margin-bottom:10px;width:100%" onclick="startL('${l.id}')"><span style="font-size:28px;width:36px;text-align:center">${l.ic}</span><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">${l.n}</div><div style="font-size:11px;color:var(--gray)">${l.q} questions • ${isDue(l.id)?'Due now':'Review later'}</div></div><span style="color:var(--felt);font-weight:800;font-size:14px">Play →</span></div>`})});
   document.getElementById('drillList').innerHTML=html;
 }
 function startPractice(){const allIds=Object.keys(L);const due=allIds.filter(isDue);const pool=due.length?due:allIds.sort((a,b)=>ensureSrs(a).due-ensureSrs(b).due).slice(0,4);const id=pool[Math.floor(Math.random()*pool.length)];startL(id)}
