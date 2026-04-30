@@ -25,9 +25,9 @@ body{font-family:'Nunito',sans-serif;background:#000;color:var(--dark);overflow-
 .nb.act .nb-i{filter:invert(39%) sepia(85%) saturate(500%) hue-rotate(88deg) brightness(95%)}.nb .nb-i{font-size:24px;height:28px;display:flex;align-items:center;justify-content:center;filter:grayscale(1) opacity(.3)}.nb.act .nb-l{color:var(--felt)}
 .nb:active{transform:scale(.9)}.nb-l{font-size:10px;font-weight:800;text-transform:uppercase;color:var(--gray)}
 /* Landing */
-.land{min-height:100vh;width:100%;background:linear-gradient(170deg,#0d1b0e,#1a3a20 30%,#0f2318 60%,var(--cream) 85%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;position:relative;overflow:hidden}
-.land::before{content:'♠ ♥ ♦ ♣';position:absolute;top:8%;left:50%;transform:translateX(-50%);font-size:100px;letter-spacing:20px;opacity:.06}
-.land::after{content:'';position:absolute;bottom:0;left:0;right:0;height:30%;background:linear-gradient(transparent,var(--cream))}
+.land{min-height:100vh;width:100%;background:linear-gradient(170deg,#0d2818,#1a5c30 30%,#0f3520 60%,#0a1f14 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;position:relative;overflow:hidden}
+.land::before{display:none}
+.land::after{display:none}
 .mf{font-size:100px;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));animation:fl 3s ease-in-out infinite;position:relative;z-index:2}
 @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .msh{width:60px;height:12px;background:rgba(0,0,0,.15);border-radius:50%;margin:8px auto 0;animation:ms 3s ease-in-out infinite}
@@ -92,7 +92,7 @@ body{font-family:'Nunito',sans-serif;background:#000;color:var(--dark);overflow-
 .pcd{width:42px;height:60px;background:#fff;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:14px;border:1.5px solid #ddd;box-shadow:0 2px 4px rgba(0,0,0,.15)}.pcd .ps{font-size:12px}.pcd.r{color:#dc2626}.pcd.bk{color:#1a1a2e}
 .vs{font-size:16px;font-weight:900;color:rgba(255,255,255,.7);padding:0 6px}
 .opts{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px;margin:0 auto}
-.opt{padding:18px 22px;background:var(--card);border:2.5px solid var(--border);border-bottom:5px solid var(--border);border-radius:16px;font-size:16px;font-weight:700;font-family:'Nunito';cursor:pointer;color:var(--dark);text-align:left;transition:.12s;width:100%}
+.opt{padding:18px 22px;background:#fff;border:2.5px solid #e2e8f0;border-bottom:5px solid #cbd5e1;border-radius:16px;font-size:16px;font-weight:700;font-family:'Nunito';cursor:pointer;color:#1a1a2e;text-align:left;transition:.12s;width:100%;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
 .opt:active{border-bottom-width:2px;transform:translateY(3px)}
 .opt.sel{border-color:var(--felt);background:#e8f5e9;border-bottom-color:var(--felt-d)}
 .opt.ok{border-color:var(--green);background:#dcfce7;border-bottom-color:var(--green-d);color:var(--green-d)}
@@ -149,50 +149,39 @@ body{font-family:'Nunito',sans-serif;background:#000;color:var(--dark);overflow-
 <div id="landing" class="screen active"><div class="land">
 <style>
 @keyframes ptFadeIn{0%{opacity:0;transform:translateY(20px)}100%{opacity:1;transform:translateY(0)}}
-@keyframes dealCard{0%{opacity:0;transform:translateY(-80px) rotate(-15deg) scale(0.5)}60%{opacity:1}100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}}
-@keyframes dealCard2{0%{opacity:0;transform:translateY(-80px) rotate(10deg) scale(0.5)}60%{opacity:1}100%{transform:translateY(0) rotate(0deg) scale(1);opacity:1}}
-@keyframes goldShimmer{0%{background-position:-200% center}100%{background-position:200% center}}
-@keyframes slowPulse{0%,100%{opacity:.6}50%{opacity:1}}
-@keyframes floatUp{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@keyframes borderGlow{0%,100%{box-shadow:0 0 15px rgba(232,197,71,0.2)}50%{box-shadow:0 0 30px rgba(232,197,71,0.4),0 0 60px rgba(232,197,71,0.1)}}
-.pt-card-deal{width:70px;height:100px;background:linear-gradient(145deg,#1a1a2e,#2a2a4a);border:2px solid rgba(232,197,71,0.3);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:900;color:#e8c547;position:relative;box-shadow:0 8px 25px rgba(0,0,0,0.4)}
-.pt-card-deal.spade{animation:dealCard 1s cubic-bezier(.22,1,.36,1) forwards,borderGlow 3s ease-in-out 1.5s infinite;animation-delay:0s,1.5s;opacity:0}
-.pt-card-deal.heart{animation:dealCard2 1s cubic-bezier(.22,1,.36,1) forwards,borderGlow 3s ease-in-out 1.5s infinite;animation-delay:0.3s,1.5s;opacity:0}
-.pt-card-pattern{position:absolute;inset:4px;border:1px solid rgba(232,197,71,0.15);border-radius:6px}
-.pt-deal-title{font-size:42px;font-weight:900;letter-spacing:8px;animation:ptFadeIn 1s ease forwards 1.2s;opacity:0;background:linear-gradient(90deg,#e8e0d4,#e8c547,#fff,#e8c547,#e8e0d4);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:ptFadeIn 1s ease forwards 1.2s,goldShimmer 3s linear 2s infinite}
-.pt-deal-sub{animation:ptFadeIn 1s ease forwards 1.8s;opacity:0;color:rgba(232,197,71,0.4);font-size:11px;letter-spacing:5px;text-transform:uppercase;margin-top:12px}
-.pt-deal-btn{animation:ptFadeIn 1s ease forwards 2.4s;opacity:0;padding:16px 50px;font-size:13px;letter-spacing:4px;background:linear-gradient(135deg,#e8c547,#d4a430);color:#0a0806;border:none;border-radius:50px;font-weight:800;cursor:pointer;font-family:inherit;transition:all .3s;text-transform:uppercase;box-shadow:0 4px 15px rgba(232,197,71,0.3);margin-top:36px}
-.pt-deal-btn:active{transform:scale(.96);box-shadow:0 2px 8px rgba(232,197,71,0.2)}
-.pt-deal-btn:hover{box-shadow:0 6px 25px rgba(232,197,71,0.4);transform:translateY(-2px)}
-.pt-corner-suit{position:absolute;font-size:10px;color:rgba(232,197,71,0.4);font-weight:700}
-.pt-corner-suit.tl{top:5px;left:6px}
-.pt-corner-suit.br{bottom:5px;right:6px;transform:rotate(180deg)}
-.pt-ambiance{position:absolute;inset:0;overflow:hidden;pointer-events:none}
-.pt-ambiance span{position:absolute;font-size:20px;opacity:.04;animation:floatUp 6s ease-in-out infinite}
+@keyframes dealIn{0%{opacity:0;transform:translateY(-60px) rotate(var(--rot)) scale(.3)}100%{opacity:1;transform:translateY(0) rotate(0deg) scale(1)}}
+@keyframes cardGlow{0%,100%{box-shadow:0 4px 15px rgba(0,0,0,0.3)}50%{box-shadow:0 4px 20px rgba(255,255,255,0.15)}}
+@keyframes goldPulse{0%,100%{opacity:.8}50%{opacity:1}}
+.pt-cards-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;max-width:360px}
+.pt-lcard{width:34px;height:48px;background:rgba(255,255,255,0.92);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#1a3a20;box-shadow:0 3px 10px rgba(0,0,0,0.25);animation:dealIn .5s cubic-bezier(.22,1,.36,1) forwards,cardGlow 4s ease-in-out 2s infinite;opacity:0;position:relative}
+.pt-lcard::after{content:'';position:absolute;inset:2px;border:1px solid rgba(0,0,0,0.08);border-radius:3px}
+.pt-lcard:nth-child(1){animation-delay:.1s}
+.pt-lcard:nth-child(2){animation-delay:.18s}
+.pt-lcard:nth-child(3){animation-delay:.26s}
+.pt-lcard:nth-child(4){animation-delay:.34s}
+.pt-lcard:nth-child(5){animation-delay:.42s}
+.pt-lcard:nth-child(6){animation-delay:.6s}
+.pt-lcard:nth-child(7){animation-delay:.68s}
+.pt-lcard:nth-child(8){animation-delay:.76s}
+.pt-lcard:nth-child(9){animation-delay:.84s}
+.pt-intro-title{animation:ptFadeIn 1s ease forwards 1.5s,goldPulse 3s ease-in-out 2.5s infinite;opacity:0;margin-top:32px;font-size:11px;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,0.25)}
+.pt-intro-btn{animation:ptFadeIn 1s ease forwards 2s;opacity:0;margin-top:28px;padding:14px 44px;font-size:12px;letter-spacing:3px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);border-radius:50px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .3s;text-transform:uppercase;backdrop-filter:blur(4px)}
+.pt-intro-btn:hover{background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.35);color:#fff}
 </style>
-<div class="pt-ambiance">
-  <span style="left:10%;top:20%;animation-delay:0s">♠</span>
-  <span style="left:80%;top:15%;animation-delay:1s">♥</span>
-  <span style="left:25%;top:70%;animation-delay:2s">♦</span>
-  <span style="left:70%;top:60%;animation-delay:0.5s">♣</span>
-  <span style="left:50%;top:80%;animation-delay:3s">♠</span>
-</div>
 <div style="z-index:2;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px;gap:0">
-<div style="display:flex;gap:12px;margin-bottom:32px">
-<div class="pt-card-deal spade">
-  <div class="pt-card-pattern"></div>
-  <span class="pt-corner-suit tl">A</span><span class="pt-corner-suit br">A</span>
-  ♠
+<div class="pt-cards-row">
+<div class="pt-lcard" style="--rot:-8deg">P</div>
+<div class="pt-lcard" style="--rot:5deg">o</div>
+<div class="pt-lcard" style="--rot:-3deg">k</div>
+<div class="pt-lcard" style="--rot:7deg">e</div>
+<div class="pt-lcard" style="--rot:-5deg">r</div>
+<div class="pt-lcard" style="--rot:4deg">T</div>
+<div class="pt-lcard" style="--rot:-6deg">i</div>
+<div class="pt-lcard" style="--rot:3deg">m</div>
+<div class="pt-lcard" style="--rot:-4deg">e</div>
 </div>
-<div class="pt-card-deal heart">
-  <div class="pt-card-pattern"></div>
-  <span class="pt-corner-suit tl">K</span><span class="pt-corner-suit br">K</span>
-  ♥
-</div>
-</div>
-<h1 class="pt-deal-title">POKERTIME</h1>
-<p class="pt-deal-sub">Everyone starts at the basement</p>
-<button class="pt-deal-btn" onclick="startApp()">Take Your Seat</button>
+<p class="pt-intro-title">Learn Poker Like a Game</p>
+<button class="pt-intro-btn" onclick="startApp()">Deal Me In</button>
 </div>
 </div></div>
 <div class="po" id="dp"><div class="pc2">
