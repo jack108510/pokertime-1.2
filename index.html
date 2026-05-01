@@ -479,25 +479,221 @@ const L={
 {t:'tf',p:'True or False: You should play the same range regardless of opponent.',a:false,ok:"False! Adapt to each opponent. That's exploitative poker.",no:'Adjust ranges based on opponent tendencies.'},
 {t:'mc',p:'"Set mining" means:',o:['Calling with a small pair hoping to hit three of a kind','Always folding small pairs','Raising with a pair'],a:0,ok:'Set mining = cheap call with pocket pair to hit a set!',no:'Set mining = calling with small PP hoping to flop trips.'},
 {t:'wb',p:'"Nut advantage" means having the ___ possible hand',bank:['best','worst','medium'],answer:['best'],ok:'Nut advantage = you can have the best hand, they can\'t!',no:'Nut advantage = having the absolute best combos.'}
+,
+'multiway':[
+{t:'mc',p:'You have T♠ T♥ in a 4-way pot on K♦ 7♠ 4♣. You should:',d:'1',h:[{v:'T',s:'♠',c:'bk'},{v:'T',s:'♥',c:'r'},{v:'K',s:'♦',c:'r'},{v:'7',s:'♠',c:'bk'},{v:'4',s:'♣',c:'bk'}],o:['Check — too many opponents','Bet big — protect','Call any bet'],a:0,ok:'Multiway = someone likely has a King. Check and re-evaluate.',no:'Multiway pots reduce your equity dramatically.'},
+{t:'mc',p:'In a 3-way pot, your equity with a medium pair is roughly:',o:['One-third of heads-up equity','About the same as HU','Double'],a:0,ok:'Multiway equity drops sharply!',no:'More opponents = less equity per player.'},
+{t:'tf',p:'True or False: You should play tighter in multiway pots.',a:true,ok:'Multiway = tighter ranges = stronger hands needed.',no:'More opponents = stronger hand needed.'},
+{t:'mc',p:'3-way pot, flop A♠ K♠ 5♥. You hold Q♠ J♠.',d:'1',h:[{v:'Q',s:'♠',c:'bk'},{v:'J',s:'♠',c:'bk'},{v:'A',s:'♠',c:'bk'},{v:'K',s:'♠',c:'bk'},{v:'5',s:'♥',c:'r'}],o:['Bet or raise — combo draw','Check — too many','Fold'],a:0,ok:'Nut flush + straight draw = monster multiway!',no:'Combo draws gain value multiway.'},
+{t:'mc',p:'"Squeeze play" works best:',o:['Against a raiser + callers','Heads-up only','When everyone checks'],a:0,ok:'Dead money from callers = squeeze profit!',no:'Squeeze = 3-bet with dead money.'},
+{t:'mc',p:'Multiway river, you have second nuts:',o:['Overbet — someone has strong too','Check — scared of nuts','Bet tiny'],a:0,ok:'Multiway = more strong hands = more value!',no:'Second nuts is almost always value multiway.'},
+{t:'tf',p:'True or False: Bluffing is less effective multiway.',a:true,ok:'More opponents = higher chance someone calls!',no:'Multiway bluffs need everyone to fold.'},
+{t:'mc',p:'SPR in multiway is usually:',o:['Lower — bigger pot vs stacks','Higher','Same as HU'],a:0,ok:'More players = bigger pot = lower SPR!',no:'Multiway pots grow faster, lowering SPR.'}
+],
+'board-texture':[
+{t:'mc',p:'Flop K♠ 7♦ 2♣. This board is:',d:'1',h:[{v:'K',s:'♠',c:'bk'},{v:'7',s:'♦',c:'r'},{v:'2',s:'♣',c:'bk'}],o:['Dry — few draws','Wet — tons of draws','Connected'],a:0,ok:'K-7-2 rainbow = bone dry!',no:'No draws = dry board.'},
+{t:'mc',p:'Flop J♠ T♠ 9♠. This board is:',d:'1',h:[{v:'J',s:'♠',c:'bk'},{v:'T',s:'♠',c:'bk'},{v:'9',s:'♠',c:'bk'}],o:['Extremely wet','Moderate','Dry'],a:0,ok:'Flush + straight + pair draws = ultra wet!',no:'Connected + suited = maximum danger.'},
+{t:'mc',p:'On wet boards you should:',o:['Bet bigger to charge draws','Check everything','Bet small'],a:0,ok:'Wet = bigger sizing to protect!',no:'Charge draws with bigger bets.'},
+{t:'mc',p:'"Static" board means:',o:['Best hand unlikely to change','All one suit','No high cards'],a:0,ok:'Static = what\'s ahead stays ahead.',no:'Static boards favor the current best hand.'},
+{t:'tf',p:'True or False: On dynamic boards, play more aggressively with draws.',a:true,ok:'Dynamic = your draw might become best = aggressive!',no:'Dynamic boards reward semibluffs.'},
+{t:'mc',p:'Flop 8♠ 5♠ 2♥. You have A♠ K♠.',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'K',s:'♠',c:'bk'},{v:'8',s:'♠',c:'bk'},{v:'5',s:'♠',c:'bk'},{v:'2',s:'♥',c:'r'}],o:['Raise — nut flush draw','Fold','Call and hope'],a:0,ok:'Nut draw + overcards = raise!',no:'Strong draw + position = aggression.'},
+{t:'mc',p:'Paired board K♠ K♦ 7♥ means:',o:['Fewer trip/full house combos for opponents','More flush draws','Wet board'],a:0,ok:'2 Kings out = only 1 left = reduced strong combos.',no:'Paired boards reduce combos.'},
+{t:'wb',p:'Many draws = ___ board',bank:['Wet','Dry','Static'],answer:['Wet'],ok:'Wet = draws!',no:'Wet boards have draw possibilities.'}
+],
+'cbet-strategy':[
+{t:'mc',p:'You raised with A♥ K♥. Flop 7♠ 4♦ 2♣ (dry). C-bet?',d:'1',h:[{v:'A',s:'♥',c:'r'},{v:'K',s:'♥',c:'r'},{v:'7',s:'♠',c:'bk'},{v:'4',s:'♦',c:'r'},{v:'2',s:'♣',c:'bk'}],o:['Yes — dry board favors raiser','No — missed','Check-raise'],a:0,ok:'Dry = c-bet works great!',no:'Dry + aggression = profitable c-bet.'},
+{t:'mc',p:'Flop J♠ T♠ 9♠ (wet). You have A♦ K♦ (no spade). C-bet?',d:'1',h:[{v:'A',s:'♦',c:'r'},{v:'K',s:'♦',c:'r'},{v:'J',s:'♠',c:'bk'},{v:'T',s:'♠',c:'bk'},{v:'9',s:'♠',c:'bk'}],o:['Check — wet + no equity = danger','Bet big','Bet small'],a:0,ok:'Wet + no draw = give up!',no:'C-betting wet boards without equity burns money.'},
+{t:'tf',p:'True or False: C-bet smaller on boards where you have range advantage.',a:false,ok:'Range advantage = bigger bets!',no:'Range advantage = bigger sizing.'},
+{t:'mc',p:'"Double barrel" means:',o:['Betting flop AND turn','Betting twice preflop','Checking twice'],a:0,ok:'C-bet + turn barrel = double barrel!',no:'Double barrel = flop then turn aggression.'},
+{t:'mc',p:'Good double barrel turns:',o:['Scare cards that help your range','Low blanks','Paired cards'],a:0,ok:'Scare cards = fold equity for barrels!',no:'Turn scare cards create barreling opportunities.'},
+{t:'match',p:'Match c-bet strategy:',pairs:[['Dry board','High c-bet frequency'],['Wet, no equity','Check/give up'],['Wet, strong draw','Semi-bluff c-bet']],ok:'C-bet mastery!',no:'Dry=frequent, Wet no equity=give up, Wet draw=semi-bluff.'},
+{t:'mc',p:'C-bet flop, called. Turn blank. You:',o:['Continue with strong/barreling cards only','Always barrel','Always give up'],a:0,ok:'Selective aggression!',no:'Turn decisions = hand + board + opponent.'},
+{t:'tf',p:'True or False: Against calling stations, c-bet less.',a:true,ok:'Stations don\'t fold = bluffing pointless!',no:'Against stations, c-bet for value only.'}
+],
+'short-stack':[
+{t:'mc',p:'15bb on bubble. A♠ 8♠ UTG. Action?',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'8',s:'♠',c:'bk'}],o:['Fold — shallow + early pos','Shove','Min-raise'],a:0,ok:'15bb UTG A-8s = fold on bubble.',no:'Short + early + bubble = fold.'},
+{t:'mc',p:'SPR stands for:',o:['Stack-to-Pot Ratio','Small Pot Raise','Standard Play Range'],a:0,ok:'SPR = commitment level.',no:'Stack-to-Pot Ratio.'},
+{t:'tf',p:'True or False: With 10bb or less, mostly play push/fold.',a:true,ok:'10bb = no postflop play. Shove or fold!',no:'10bb and under = push/fold.'},
+{t:'mc',p:'12bb on button with K♣ Q♣. Folded to you:',d:'1',h:[{v:'K',s:'♣',c:'bk'},{v:'Q',s:'♣',c:'bk'}],o:['Shove — great steal spot','Fold','Min-raise'],a:0,ok:'Button + KQs + 12bb = perfect shove!',no:'Late pos + decent hand + short = shove.'},
+{t:'mc',p:'"Reshove" is:',o:['Re-raising all-in over a shove','Calling a shove','Folding'],a:0,ok:'Reshove = dead money makes it profitable!',no:'Reshove = 3-bet all-in.'},
+{t:'wb',p:'20bb or less = ___ or fold',bank:['shove','call','check'],answer:['shove'],ok:'Push/fold game!',no:'Short stack = push/fold.'},
+{t:'mc',p:'Nash push/fold charts tell you:',o:['Which hands to shove at each depth','Always go all-in','Which hands to call only'],a:0,ok:'Nash = mathematically correct ranges per stack size!',no:'Nash = optimal ranges at every depth.'},
+{t:'tf',p:'True or False: Short stack strategy is easier to execute than deep stack.',a:true,ok:'Fewer decisions = simpler. But edges are smaller.',no:'Push/fold = fewer decisions = simpler.'}
+],
+'3bet-pot':[
+{t:'mc',p:'In 3-bet pots, ranges are:',o:['Tighter and stronger','Wider and weaker','Same'],a:0,ok:'3-bet = narrower ranges = stronger.',no:'3-betting narrows ranges.'},
+{t:'mc',p:'You 3-bet A♠ K♠, called. Flop Q♦ 7♣ 3♠:',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'K',s:'♠',c:'bk'},{v:'Q',s:'♦',c:'r'},{v:'7',s:'♣',c:'bk'},{v:'3',s:'♠',c:'bk'}],o:['C-bet — range advantage + overcards','Check','Check-raise'],a:0,ok:'3-bettor has range advantage. C-bet!',no:'Your range contains all the strong hands.'},
+{t:'tf',p:'True or False: Bet smaller proportionally in 3-bet pots.',a:true,ok:'Smaller bets work — pot is already inflated.',no:'Proportional sizing is smaller in inflated pots.'},
+{t:'mc',p:'"Polarized 3-betting" means:',o:['3-betting nuts + bluffs','Only aces','Every hand'],a:0,ok:'Polarized = AA,KK (value) + suited connectors (bluff).',no:'Polarized = extremes only.'},
+{t:'mc',p:'Facing 3-bet with J♠ J♥:',d:'1',h:[{v:'J',s:'♠',c:'bk'},{v:'J',s:'♥',c:'r'}],o:['Call — strong enough to see flop, not 4-bet','Fold','4-bet shove'],a:0,ok:'JJ = call most 3-bets.',no:'JJ is in the flatting range.'},
+{t:'mc',p:'"Linear 3-betting" means:',o:['3-betting merged strong range','Randomly','Only bluffs'],a:0,ok:'Linear = AQ+, JJ+ = all strong, no bluffs.',no:'Linear = value-heavy.'},
+{t:'tf',p:'True or False: 3-bettor should c-bet more than caller.',a:true,ok:'Range advantage + initiative = more aggression!',no:'Aggressor has stronger range.'},
+{t:'mc',p:'OOP as caller in 3-bet pot:',o:['Very tight — range disadvantage','Very aggressive','Call down any pair'],a:0,ok:'OOP caller = tight and defensive.',no:'OOP + calling range = disadvantage.'}
+],
+'exploit':[
+{t:'mc',p:'Player folds to 3-bets 80%. You:',o:['3-bet relentlessly with any two','Play normally','Never bluff them'],a:0,ok:'80% fold = printing money!',no:'High fold rate = exploit with bluffs.'},
+{t:'mc',p:'"Exploitative poker" means:',o:['Adjusting to opponent tendencies','Playing GTO','Always tight'],a:0,ok:'Exploit = see leak, attack leak!',no:'Exploitative = adapting to weaknesses.'},
+{t:'tf',p:'True or False: Exploitative > GTO vs weak players.',a:true,ok:'GTO breaks even vs perfect play. Exploitation crushes mistakes!',no:'Exploitation maximizes profit vs weak opponents.'},
+{t:'mc',p:'Villain never folds top pair:',o:['Value bet relentlessly, never bluff','Bluff more','Play GTO'],a:0,ok:'Never folds TP = bet all value, zero bluffs!',no:'Attack their weakness.'},
+{t:'mc',p:'Tight player leads river suddenly:',o:['Has the nuts or very strong','Bluffing','Medium hand'],a:0,ok:'Nits don\'t lead without monsters.',no:'Out of character = strong.'},
+{t:'match',p:'Match exploits:',pairs:[['Calling station','Value wide, no bluff'],['Tight folder','Bluff frequently'],['Aggro fish','Trap strong']],ok:'Exploit mastery!',no:'Station=value, Nit=bluff, Aggro=trap.'},
+{t:'mc',p:'Risk of exploitative play:',o:['Smart opponents counter-adjust','You lose more','Always worse'],a:0,ok:'Too obvious = opponents exploit you back!',no:'Exploitation has an upper level.'},
+{t:'tf',p:'True or False: Use different exploits per opponent at same table.',a:true,ok:'Seat-by-seat exploitation!',no:'Adjust to each player individually.'}
+],
+'range-balance':[
+{t:'mc',p:'"Balanced range" means:',o:['Value + bluffs in right proportions','Only strong','Same sizing'],a:0,ok:'Balanced = unexploitable!',no:'Balance = right mix of strong and weak.'},
+{t:'mc',p:'If you only bet strong, opponents will:',o:['Fold everything except best hands','Call light','Bluff more'],a:0,ok:'Predictable = opponents exploit perfectly!',no:'Only value betting = they fold when you bet.'},
+{t:'tf',p:'True or False: Adding bluffs makes value bets more profitable.',a:true,ok:'Bluffs force calls = value gets paid!',no:'Threat of bluffs = more value calls.'},
+{t:'mc',p:'Pot-sized river bet, GTO says bluff frequency:',o:['~33%','0%','50%'],a:0,ok:'Pot bet = 2:1 = 33% bluffs!',no:'Pot-sized bet = ~33% bluff frequency.'},
+{t:'wb',p:'Only strong hands = ___ range',bank:['unbalanced','balanced','merged'],answer:['unbalanced'],ok:'Unbalanced = exploitable!',no:'Only strong = unbalanced.'},
+{t:'mc',p:'"Merged range" means:',o:['Strong + medium + weak hands','Only nuts','Only bluffs'],a:0,ok:'Merged = everything. Thin value + bluffs.',no:'Merged = all hand strengths.'},
+{t:'tf',p:'True or False: Lower stakes need less balance.',a:true,ok:'Weak opponents don\'t exploit = skip balance!',no:'Weaker opponents = less need for balance.'},
+{t:'mc',p:'MDF tells you:',o:['Minimum % to defend vs bet','When to fold all','How much to bet'],a:0,ok:'MDF prevents over-folding!',no:'MDF = 1 - (bet/pot).'}
+],
+'polarized':[
+{t:'mc',p:'"Polarized" range contains:',o:['Very strong + bluffs, nothing between','Only medium','Everything'],a:0,ok:'Polarized = nuts or air!',no:'Polar = extremes only.'},
+{t:'mc',p:'Use polarized sizing when:',o:['Your range is clearly strong or weak','Medium hands','Unsure'],a:0,ok:'Polarized = big bets with nuts AND bluffs!',no:'Extreme range = extreme sizing.'},
+{t:'mc',p:'"Merged" sizing best when:',o:['Many medium-strength hands','Nuts only','Bluffing'],a:0,ok:'Merged = medium hands = smaller frequent bets.',no:'Merged = smaller sizing for thin value.'},
+{t:'tf',p:'True or False: Overbets are used with polarized ranges.',a:true,ok:'Overbets = big sizing = polarized!',no:'Overbets work with polarized ranges.'},
+{t:'mc',p:'Board A♠ K♦ 7♣ 4♠ 2♥. River check-raise huge =',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'K',s:'♦',c:'r'},{v:'7',s:'♣',c:'bk'},{v:'4',s:'♠',c:'bk'},{v:'2',s:'♥',c:'r'}],o:['Polarized — two pair+ or bluff','Merged','Only nuts'],a:0,ok:'Huge check-raise = polarized!',no:'Big raises = strong or bluff.'},
+{t:'match',p:'Match ranges:',pairs:[['Polarized','Nuts or air'],['Merged','All strengths'],['Depolarized','Medium focused']],ok:'Range vocab locked!',no:'Polar=extremes, Merged=all, Depolarized=middle.'},
+{t:'mc',p:'Vs calling station, play ___ for value:',o:['Merged — bet all medium+','Polarized — only nuts','Depolarized'],a:0,ok:'Stations pay off ALL your value!',no:'Stations let you merge.'},
+{t:'tf',p:'True or False: Polarized ranges benefit from larger sizing.',a:true,ok:'Big bets + polarized = max fold equity + value!',no:'Polarized = extreme hands = extreme sizing.'}
+],
+'bet-sizing':[
+{t:'mc',p:'Pot-sized bet requires ___% to call:',o:['33%','50%','25%'],a:0,ok:'Pot bet = 2:1 = 33%!',no:'Pot = 2:1 odds.'},
+{t:'mc',p:'Small bets (25-33% pot) best for:',o:['Thin value and blocking','Big bluffs','Getting folds'],a:0,ok:'Small = cheap value + deny equity.',no:'Small sizing = thin value.'},
+{t:'tf',p:'True or False: Overbetting can be optimal with polarized ranges.',a:true,ok:'Overbet = more folds + more value from nuts!',no:'Overbets correct with polarized ranges.'},
+{t:'mc',p:'Nuts on river. Pot $200. Vs calling station?',o:['$200+ — maximum value','$50 small','Check trap'],a:0,ok:'Station + nuts = bet huge!',no:'Size up vs stations.'},
+{t:'mc',p:'Wet board + strong vulnerable hand:',o:['Bet big to charge draws','Bet small','Check'],a:0,ok:'Wet + strong = big sizing to protect!',no:'Charge draws.'},
+{t:'wb',p:'Bet > pot = ___',bank:['overbet','underbet','minbet'],answer:['overbet'],ok:'Overbet!',no:'> pot = overbet.'},
+{t:'mc',p:'"Geometric sizing" means:',o:['Same fraction each street to set up all-in','Random amounts','Only flop bets'],a:0,ok:'Geometric = consistent sizing for river all-in!',no:'Geometric plans stacks going in.'},
+{t:'tf',p:'True or False: Same sizing regardless of board texture.',a:false,ok:'Different textures = different sizing!',no:'Board texture influences sizing.'}
+],
+'turn-river':[
+{t:'mc',p:'Turn is sometimes called:',o:['"Fourth street"','"Fifth street"','"The river"'],a:0,ok:'Turn = 4th card = Fourth Street!',no:'4th card = Fourth Street.'},
+{t:'mc',p:'Turn completes flush draw. You don\'t have it:',o:['Check unless representing','Bet big','Call anything'],a:0,ok:'Completed draws hurt your range. Be cautious.',no:'When draws complete, reassess.'},
+{t:'tf',p:'True or False: River decisions are most important.',a:true,ok:'River = final decision. No more cards!',no:'River is where money is won or lost.'},
+{t:'mc',p:'"Value betting the river" means:',o:['Expecting called by worse','Bluffing','Checking'],a:0,ok:'Value bet = called by worse = profit!',no:'Value betting = wanting a call.'},
+{t:'mc',p:'Board K♠ Q♦ 7♣ 4♠ 2♥. A♠ K♥. Bet or check?',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'K',s:'♥',c:'r'},{v:'K',s:'♠',c:'bk'},{v:'Q',s:'♦',c:'r'},{v:'7',s:'♣',c:'bk'},{v:'4',s:'♠',c:'bk'},{v:'2',s:'♥',c:'r'}],o:['Bet — TPTK is strong','Check','Fold'],a:0,ok:'AK on K-Q-7-4-2 = clear value bet.',no:'TPTK dry board = value.'},
+{t:'mc',p:'"Thin value" means:',o:['Betting marginal hand expecting slightly worse call','Nuts only','Checking strong'],a:0,ok:'Thin = small edge, still +EV.',no:'Thin = marginal but still ahead.'},
+{t:'tf',p:'True or False: Sometimes bet hands that lose to part of their range.',a:true,ok:'If they fold enough or call worse enough = +EV!',no:'Can be +EV even when sometimes losing.'},
+{t:'mc',p:'Passive player bombs river suddenly:',o:['Very strong hand','Bluff','Medium'],a:0,ok:'Passive players don\'t bomb without goods!',no:'Out of character = strong.'}
+],
+'mental-game':[
+{t:'mc',p:'"Tilt" is:',o:['Emotional play from frustration','A strategy','A tournament type'],a:0,ok:'Tilt = emotions = bad decisions.',no:'Tilt = emotional spiral.'},
+{t:'mc',p:'Best way to handle bad beat:',o:['Accept variance, breathe, stick to strategy','Play more aggressive','Quit'],a:0,ok:'Bad beats happen. Process and move on.',no:'Emotional control = long-term success.'},
+{t:'tf',p:'True or False: Bankroll management is part of mental game.',a:true,ok:'Proper bankroll = less stress = better decisions.',no:'Bankroll prevents emotional play.'},
+{t:'mc',p:'"Results-oriented thinking" is:',o:['Focusing on outcomes over decision quality','Always winning','Only profit'],a:0,ok:'Good process > good results.',no:'Judge decisions, not outcomes.'},
+{t:'match',p:'Match mental concepts:',pairs:[['Tilt','Emotional spiral'],['Focus','Present awareness'],['Discipline','Stick to strategy']],ok:'Mental game strong!',no:'Tilt=emotion, Focus=present, Discipline=strategy.'},
+{t:'mc',p:'Bankroll for $1/$2 NL:',o:['$4,000+ (20 buy-ins)','$200','$1,000'],a:0,ok:'20+ buy-ins minimum!',no:'20-40 buy-ins for cash.'}
+],
+'hand-reading':[
+{t:'mc',p:'Hand reading starts:',o:['Preflop based on position and action','On flop','On river'],a:0,ok:'Every read begins preflop!',no:'Preflop action is the foundation.'},
+{t:'mc',p:'Villain: raise UTG, bet flop, bet turn, bomb river. Range:',o:['Very strong','Random','Only bluffs'],a:0,ok:'UTG + 3 streets aggression = strong!',no:'Line consistency narrows ranges.'},
+{t:'tf',p:'True or False: Update your read every street.',a:true,ok:'Each street refines the range!',no:'Hand reading is iterative.'},
+{t:'mc',p:'"Combinatorics" means:',o:['Counting actual hand combos','Guessing','Memorizing charts'],a:0,ok:'Combos = exact math!',no:'Counting possible combinations.'},
+{t:'mc',p:'How many AK combos?',o:['16','4','12'],a:0,ok:'4 Aces × 4 Kings = 16!',no:'16 combos of AK.'},
+{t:'mc',p:'You hold A♠, board A♥ A♦. Trip A combos for villain:',d:'1',h:[{v:'A',s:'♠',c:'bk'},{v:'A',s:'♥',c:'r'},{v:'A',s:'♦',c:'r'}],o:['1 (A♣ only)','4','0'],a:0,ok:'3 Aces gone = only A♣ = 1 combo!',no:'Blocker effect reduces combos.'},
+{t:'mc',p:'Check-call, check-call, donk-shove river =',o:['Polarized — nuts or bluff','Medium','Always bluff'],a:0,ok:'Passive then explosion = polarized.',no:'Sudden aggression = polarized.'},
+{t:'ord',p:'Hand reading:',items:['Preflop action','Narrow on flop','Refine turn','Decide river'],ok:'Systematic!',no:'PF → Flop → Turn → River.'}
+],
+'final-table':[
+{t:'mc',p:'Most important factor at final table:',o:['ICM — tournament equity in $','Chips only','Cards only'],a:0,ok:'Every decision = massive $EV!',no:'ICM dominates final tables.'},
+{t:'mc',p:'3rd of 4, short stack has 2bb:',o:['Maximum pressure — they\'re desperate','Play tight','Give walks'],a:0,ok:'Short stack dying = you gain. Pressure!',no:'When someone\'s about to bust = aggression.'},
+{t:'tf',p:'True or False: Folding strong hands can be correct at FT due to ICM.',a:true,ok:'Folding QQ preflop can lock up a pay jump!',no:'ICM makes folding monsters correct.'},
+{t:'mc',p:'"Deal making" at final table:',o:['Reduces variance by splitting prizes','Always bad','Giving up'],a:0,ok:'Deals = lock in guaranteed money.',no:'Deal = mathematical prize split.'},
+{t:'mc',p:'"Bubble factor" measures:',o:['How much equity you lose by busting vs gaining','Is always 1.0','Bubble popped'],a:0,ok:'Bubble factor > 1 = losing hurts more than gaining helps.',no:'Bubble factor = ICM pressure.'},
+{t:'wb',p:'Final table driven by ___',bank:['ICM','luck','speed'],answer:['ICM'],ok:'ICM!',no:'ICM drives FT decisions.'},
+{t:'tf',p:'True or False: Chip leader should play more aggressive at FT.',a:true,ok:'Big stack = can bust people = pressure!',no:'Chip leaders should bully.'},
+{t:'mc',p:'HU at FT, chip lead. Strategy:',o:['Aggressive — raise wide, c-bet often','Tight','Passive'],a:0,ok:'HU lead = press every advantage!',no:'HU aggression = proportional to stack.'}
+],
+'bounty':[
+{t:'mc',p:'PKO means:',o:['Half buy-in to bounty, half to prize pool','All bounties','No bounties'],a:0,ok:'PKO = progressive knockouts grow!',no:'PKO = bounties grow.'},
+{t:'mc',p:'Bounty tournaments mean:',o:['Call wider when bounty covers risk','Play tighter','Ignore bounties'],a:0,ok:'Bounty money changes the math!',no:'Bounties widen calling ranges.'},
+{t:'tf',p:'True or False: -EV calls can become +EV with bounty overlay.',a:true,ok:'Bounty = extra equity!',no:'Bounties add expected value.'},
+{t:'mc',p:'"Mystery bounty" tournament:',o:['Hidden bounties revealed on knockout','No bounties','Fixed bounties'],a:0,ok:'Mystery = surprise prizes!',no:'Mystery bounties revealed on knockout.'},
+{t:'mc',p:'Your bounty $50. Pot $100, call $40. With bounty:',o:['Less equity needed to call','More equity','Same equity'],a:0,ok:'Bounty adds to winnings = less equity needed!',no:'Bounty overlay reduces threshold.'},
+{t:'tf',p:'True or False: More aggressive vs large bounties in PKO.',a:true,ok:'Big bounty = big reward = target them!',no:'Target big bounties.'}
+],
+'mixed-games':[
+{t:'mc',p:'PLO gives you:',o:['4 hole cards, use exactly 2','2 hole cards','5 hole cards'],a:0,ok:'PLO = 4 cards, use 2+3 from board.',no:'PLO = 4 hole cards.'},
+{t:'mc',p:'7-Card Stud:',o:['7 cards (3 down, 4 up), best 5 play','5 community','2 hole cards'],a:0,ok:'Stud = no community cards!',no:'Stud = individual boards.'},
+{t:'tf',p:'True or False: Nut flush draw has more outs in PLO.',a:true,ok:'4 cards = more combo draws!',no:'Extra cards = more draw combos.'},
+{t:'mc',p:'"8-game mix" includes:',o:['Hold\'em, PLO, Stud, Razz, O8, Triple Draw, NLH, PLO8','Only hold\'em','Only stud'],a:0,ok:'8-game = full rotation!',no:'8-game = standard mixed format.'},
+{t:'mc',p:'Razz goal:',o:['Lowest hand','Highest hand','Royal flush'],a:0,ok:'Razz = lowball. A-2-3-4-5 = best!',no:'Razz = worst hand wins.'},
+{t:'tf',p:'True or False: Mixed game players considered more skilled.',a:true,ok:'Multiple formats = broader skill!',no:'Mixed = mastery of multiple games.'}
+],
+'heads-up':[
+{t:'mc',p:'HU, play approximately:',o:['Top 70-80% from button','Top 10%','Every hand'],a:0,ok:'HU = wide. Button opens ~80%!',no:'HU requires wider ranges.'},
+{t:'mc',p:'HU, small blind:',o:['Has button, acts first preflop, last postflop','Always last','Always first'],a:0,ok:'HU: SB = button = first PF, last post.',no:'HU reverses position rules.'},
+{t:'tf',p:'True or False: HU has highest variance.',a:true,ok:'Wide ranges + frequent pots = swings!',no:'HU = widest ranges = biggest variance.'},
+{t:'mc',p:'Opponent 3-bets every button:',o:['4-bet light and call wider','Fold everything','Only aces'],a:0,ok:'Over-aggression = fight back wider!',no:'Exploit over-aggression.'},
+{t:'mc',p:'"Limp button" HU:',o:['Mixes up play, induces mistakes','Always bad','Only low stakes'],a:0,ok:'Limping HU = deception weapon!',no:'Limping adds deception.'},
+{t:'mc',p:'HU SNG as blinds rise:',o:['Play more aggressively','Stay passive','Same regardless'],a:0,ok:'Rising blinds = more aggression!',no:'Escalation = more pressure.'},
+{t:'tf',p:'True or False: Position matters most HU.',a:true,ok:'Only 2 players = position = everything!',no:'Position is biggest HU advantage.'},
+{t:'match',p:'Match HU:',pairs:[['HU ranges','Very wide'],['HU aggression','Frequent'],['HU variance','Very high']],ok:'HU mastery!',no:'Wide+aggressive+high variance.'}
+],
+'deep-run':[
+{t:'mc',p:'"Deep run" means:',o:['Far into tournament with big stack','All-in','Cash games'],a:0,ok:'Deep run = late + healthy stack!',no:'Deep = still alive late.'},
+{t:'mc',p:'Big stack on bubble:',o:['Pressure medium stacks wanting to survive','Play tight','Only premiums'],a:0,ok:'Big + bubble = bully!',no:'Pressure those trying to survive.'},
+{t:'tf',p:'True or False: Risk it all on marginal spots with big stack.',a:false,ok:'Big stack = weapon. Don\'t waste it!',no:'Protect your advantage.'},
+{t:'mc',p:'"Table image" during deep run:',o:['Matters more — opponents study you','Doesn\'t matter','Only day 1'],a:0,ok:'Deep = same opponents = they learn patterns.',no:'Image matters in long sessions.'},
+{t:'mc',p:'"Chip up" means:',o:['Converting stack advantage into more chips','All-in','Tight play'],a:0,ok:'Chip up = grow through aggression.',no:'Stack → more chips.'},
+{t:'tf',p:'True or False: Tighten up to "protect" stack during deep run.',a:false,ok:'Protecting = passive = bleeding. Stay smart aggressive!',no:'Passive play is amateur mistake.'}
+],
+'championship':[
+{t:'mc',p:'#1 trait of champions:',o:['Discipline — sustained good decisions','Aggression','Luck'],a:0,ok:'Championship = sustained excellence.',no:'Discipline separates champions.'},
+{t:'mc',p:'Tournament "preparation" includes:',o:['Studying opponents, reviewing hands, physical prep','Just showing up','Only luck'],a:0,ok:'Champions prepare physically + mentally.',no:'Prep = study + rest + focus.'},
+{t:'tf',p:'True or False: Best players lose most tournaments they enter.',a:true,ok:'Massive variance. Pros win <20%.',no:'Nobody wins consistently.'},
+{t:'mc',p:'"Table selection" means:',o:['Choosing softer tables/seats','First table','Picking cards'],a:0,ok:'Champions seek soft spots!',no:'Table selection = finding profit.'},
+{t:'mc',p:'"Long game" mindset:',o:['Career thinking, not single session','Win every hand','All-in always'],a:0,ok:'Career length = emotional stability.',no:'Think months/years.'},
+{t:'match',p:'Match champion traits:',pairs:[['Discipline','Consistent decisions'],['Adaptability','Adjusting'],['Resilience','Bouncing back']],ok:'Championship!',no:'Discipline+Adapt+Resilience.'},
+{t:'mc',p:'"Hourly rate" thinking helps:',o:['Make +EV decisions without emotion','Win every hand','Avoid all risk'],a:0,ok:'EV thinking removes emotion.',no:'Expected value = process over results.'},
+{t:'tf',p:'True or False: Breaks during long tournaments = championship prep.',a:true,ok:'Fatigue = bad decisions. Champions reset.',no:'Breaks maintain focus.'}
 ]
 };
 
 const MAP=[
-{lvl:'LEVEL 1',ls:[
-{id:'card-values',ic:'A♠',n:'Card Values',q:8},
-{id:'hand-rankings',ic:'♛',n:'Hand Rankings',q:10},
-{id:'pot-odds',ic:'÷',n:'Pot Odds',q:10},
-{id:'position',ic:'◎',n:'Position Play',q:8},
-{id:'betting-basics',ic:'$$',n:'Betting Basics',q:8},
-{id:'bluffing',ic:'?!',n:'Bluffing 101',q:8},
+{lvl:'LEVEL 1 — BASICS',ls:[
+{id:'card-values',ic:'A♠',n:'Card Values',q:8,tip:'Every poker decision starts with knowing what beats what. This module covers card hierarchy and relative hand strength.'},
+{id:'hand-rankings',ic:'♛',n:'Hand Rankings',q:10,tip:'From high card to royal flush — you need to instantly recognize what you\'re holding and what could beat you.'},
+{id:'pot-odds',ic:'÷',n:'Pot Odds',q:10,tip:'Pot odds tell you whether a call is profitable long-term. This is the single most important math skill in poker.'},
+{id:'position',ic:'◎',n:'Position Play',q:8,tip:'Where you sit at the table determines what you should play. Late position = more information = more profit.'},
+{id:'betting-basics',ic:'$$',n:'Betting Basics',q:8,tip:'Understanding when to bet, raise, call, or fold is the foundation of every winning strategy.'},
+{id:'bluffing',ic:'?!',n:'Bluffing 101',q:8,tip:'Bluffing isn\'t about lying — it\'s about representing a range of hands and forcing mistakes.'},
 ]},
-{lvl:'LEVEL 2',ls:[
-{id:'ranges',ic:'⊞',n:'Range Reading',q:8},
-{id:'preflop',ic:'PF',n:'Pre-flop Strategy',q:8},
-{id:'gto-basics',ic:'Δ',n:'GTO Basics',q:8},
-{id:'tournament',ic:'★',n:'Tournament Play',q:8},
-{id:'tells',ic:'🧠',n:'Reading Tells',q:8},
-{id:'advanced-strategy',ic:'EX',n:'Advanced Strategy',q:10},
+{lvl:'LEVEL 2 — STRATEGY',ls:[
+{id:'ranges',ic:'⊞',n:'Range Reading',q:8,tip:'Stop putting opponents on one hand. Think in ranges — the full collection of hands they could have.'},
+{id:'preflop',ic:'PF',n:'Pre-flop Strategy',q:8,tip:'The most important street. Good preflop decisions make every later street easier and more profitable.'},
+{id:'gto-basics',ic:'Δ',n:'GTO Basics',q:8,tip:'Game Theory Optimal play is unexploitable. Learn the baseline strategy before you learn to deviate.'},
+{id:'tournament',ic:'★',n:'Tournament Play',q:8,tip:'Tournament poker is different — chip values change, ICM matters, and survival sometimes beats accumulation.'},
+{id:'tells',ic:'🧠',n:'Reading Tells',q:8,tip:'Physical and timing tells leak information. Learn to read what opponents give away without realizing it.'},
+{id:'advanced-strategy',ic:'EX',n:'Advanced Strategy',q:10,tip:'Squeeze plays, overbets, slowplaying, blockers — these are the tools that separate good from great.'},
+]},
+{lvl:'LEVEL 3 — ADVANCED',ls:[
+{id:'multiway',ic:'MW',n:'Multiway Pots',q:8,tip:'Most training focuses on heads-up, but multiway pots have entirely different dynamics. Equity drops sharply against multiple opponents.'},
+{id:'board-texture',ic:'🎨',n:'Board Texture',q:8,tip:'Wet, dry, static, dynamic — the texture of the board determines how you should approach every hand.'},
+{id:'cbet-strategy',ic:'CB',n:'C-bet Mastery',q:8,tip:'Continuation betting isn\'t automatic anymore. Learn when to c-bet, when to give up, and when to double barrel.'},
+{id:'short-stack',ic:'📉',n:'Short Stack Play',q:8,tip:'Playing 20-40bb requires a different skillset. Push/fold ranges, reshove spots, and SPR considerations.'},
+{id:'3bet-pot',ic:'3B',n:'3-Bet Pots',q:8,tip:'3-bet pots are where the big money flows. Learn how ranges change when the pot gets inflated preflop.'},
+{id:'exploit',ic:'⚡',n:'Exploitative Play',q:8,tip:'GTO is the baseline, but exploitative play maximizes profit against real opponents with real tendencies.'},
+]},
+{lvl:'LEVEL 4 — EXPERT',ls:[
+{id:'range-balance',ic:'⚖️',n:'Range Balancing',q:8,tip:'A balanced range has the right mix of value and bluffs so opponents can\'t exploit you. Critical at higher stakes.'},
+{id:'polarized',ic:'🔺',n:'Polarized Ranges',q:8,tip:'Polarized means nuts or air. Merged means everything in between. Knowing which to use is an art.'},
+{id:'bet-sizing',ic:'📏',n:'Bet Sizing Theory',q:8,tip:'Small bets, big bets, overbets — each size serves a purpose. Master sizing and you control the pot.'},
+{id:'turn-river',ic:'🌊',n:'Turn & River Play',q:8,tip:'The later streets are where pots get huge. Learn to navigate turn decisions and river value bets.'},
+{id:'mental-game',ic:'🧘',n:'Mental Game',q:6,tip:'Tilt control, discipline, bankroll management — the mental game separates recreational players from pros.'},
+{id:'hand-reading',ic:'🔍',n:'Hand Reading Lab',q:8,tip:'Put it all together: narrow ranges street by street, then make the right decision based on the puzzle you\'ve built.'},
+]},
+{lvl:'LEVEL 5 — MASTERY',ls:[
+{id:'final-table',ic:'👑',n:'Final Table ICM',q:8,tip:'Every decision at a final table has massive $EV implications. Pay jumps change everything.'},
+{id:'bounty',ic:'🎯',n:'Bounty Tournaments',q:6,tip:'Knockout and PKO formats change the math entirely. Sometimes it\'s correct to call wider just for the bounty.'},
+{id:'mixed-games',ic:'🎲',n:'Mixed Game Basics',q:6,tip:'Poker is more than hold\'em. PLO, Stud, Draw — learn the basics of other variants.'},
+{id:'heads-up',ic:'🆚',n:'Heads-Up Strategy',q:8,tip:'1v1 poker is the purest form. Wider ranges, more aggression, and maximum pressure.'},
+{id:'deep-run',ic:'🏃',n:'Deep Run Strategy',q:6,tip:'When you\'re deep in a tournament with a big stack, you need to know how to apply pressure without risking it all.'},
+{id:'championship',ic:'🏆',n:'Championship Mindset',q:8,tip:'The mental approach of elite players: preparation, focus, adaptability, and resilience.'},
 ]}
 ];
 
@@ -547,7 +743,16 @@ function buildPractice(){
 
 function buildProfile(){
   const lessons=Object.keys(G.completed).length;
-  let h=`<div class="profile-stats"><div class="pstat"><div class="pstat-val">${G.chips}</div><div class="pstat-lbl">Chips</div></div><div class="pstat"><div class="pstat-val">${lessons}</div><div class="pstat-lbl">Lessons</div></div><div class="pstat"><div class="pstat-val">${G.streak}</div><div class="pstat-lbl">Streak</div></div><div class="pstat"><div class="pstat-val">${G.xp}</div><div class="pstat-lbl">Total XP</div></div></div>`;
+  let h=`<div class="profile-stats"><div class="pstat"><div class="pstat-val">${G.chips}</div><div class="pstat-lbl">Chips</div></div><div class="pstat"><div class="pstat-val">${lessons}</div><div class="pstat-lbl">Lessons</div></div><div class="pstat"><div class="pstat-val">${G.streak}</div><div class="pstat-lbl">Streak</div></div><div class="pstat"><div class="pstat-val">${G.xp}</div><div class="pstat-lbl">XP</div></div></div>`;
+  h+='<div style="font-size:12px;font-weight:800;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Achievements</div>';
+  h+='<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px">';
+  const unlocked=G.ach.unlocked||[];
+  ACHIEVEMENTS.forEach(a=>{
+    const done=unlocked.includes(a.id);
+    h+=`<div class="mod-row" style="opacity:${done?1:.35}"><div class="mod-ico">${done?a.icon:'🔒'}</div><div class="mod-name" style="font-size:11px">${a.name}</div><div class="mod-status ${done?'done':'todo'}" style="font-size:10px">${done?'✓':a.desc}</div></div>`;
+  });
+  h+='</div>';
+  h+='<div style="font-size:12px;font-weight:800;color:var(--text-dim);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px">Modules</div>';
   h+='<div class="profile-modules">';
   MAP.forEach(sec=>sec.ls.forEach(l=>{
     const dn=!!G.completed[l.id];
@@ -590,11 +795,48 @@ function startPractice(){
 }
 
 // ===== LESSON ENGINE =====
+let combo=0;
+const ACHIEVEMENTS=[
+{id:'first_lesson',name:'First Steps',desc:'Complete your first lesson',icon:'🎯',check:()=>Object.keys(G.completed).length>=1},
+{id:'five_lessons',name:'Getting Serious',desc:'Complete 5 lessons',icon:'🔥',check:()=>Object.keys(G.completed).length>=5},
+{id:'all_l1',name:'Level 1 Master',desc:'Complete all Level 1 lessons',icon:'⭐',check:()=>MAP[0].ls.every(l=>G.completed[l.id])},
+{id:'perfect',name:'Perfect Hand',desc:'100% accuracy on any lesson',icon:'💎',check:()=>Object.values(G.ach||{}).some(v=>v>=1)},
+{id:'streak3',name:'3-Day Streak',desc:'Study 3 days in a row',icon:'🔥',check:()=>G.streak>=3},
+{id:'streak7',name:'Week Warrior',desc:'Study 7 days in a row',icon:'🏆',check:()=>G.streak>=7},
+{id:'combo5',name:'Combo King',desc:'5 correct answers in a row',icon:'⚡',check:()=>(G.ach||{}).maxCombo>=5},
+{id:'combo10',name:'Unstoppable',desc:'10 correct answers in a row',icon:'👑',check:()=>(G.ach||{}).maxCombo>=10},
+{id:'chips1000',name:'High Roller',desc:'Earn 1,000 chips',icon:'💰',check:()=>G.chips>=1000},
+{id:'xp500',name:'Scholar',desc:'Earn 500 XP',icon:'📚',check:()=>G.xp>=500},
+];
+function checkAchievements(){
+  if(!G.ach.unlocked)G.ach.unlocked=[];
+  ACHIEVEMENTS.forEach(a=>{
+    if(!G.ach.unlocked.includes(a.id)&&a.check()){
+      G.ach.unlocked.push(a.id);
+      const t=$('xpToast');t.textContent=`🏆 ${a.icon} ${a.name}!`;t.classList.add('sh');setTimeout(()=>t.classList.remove('sh'),2500);
+    }
+  });
+}
 
 function startL(id){
   if(!L[id])return;
-  G.lesson=id;G.q=0;G.correct=0;G.lives=3;G.sel=null;G.done=false;G.t0=Date.now();G.mSel=null;G.mMatched=[];
-  showScreen('lesson');renderLives();loadQ();
+  G.lesson=id;G.q=0;G.correct=0;G.lives=3;G.sel=null;G.done=false;G.t0=Date.now();G.mSel=null;G.mMatched=[];combo=0;
+  showScreen('lesson');renderLives();showLessonIntro();
+}
+function showLessonIntro(){
+  const ls=MAP.flatMap(s=>s.ls).find(l=>l.id===G.lesson);
+  const tip=ls?.tip||'Master this module to level up your game.';
+  const lvl=MAP.find(s=>s.ls.some(l=>l.id===G.lesson))?.lvl||'';
+  $('lbar').style.width='0%';
+  $('lfb').className='feedback';$('contBar').className='continue-bar';
+  $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
+    <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">${lvl}</div>
+    <div style="font-size:48px;margin-bottom:16px">${ls?.ic||'♠'}</div>
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:12px">${ls?.n||G.lesson}</h2>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.6;max-width:300px;margin-bottom:24px">${tip}</p>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:24px">${L[G.lesson].length} questions · ${G.lives} lives</div>
+    <button class="intro-btn" style="animation:none;opacity:1" onclick="loadQ()">Let's Go</button>
+  </div>`;
 }
 
 function renderLives(){
@@ -640,7 +882,8 @@ function checkNow(){
   else if(q.t==='wb')ok=JSON.stringify(G.wbAns.map(a=>a.w))===JSON.stringify(q.answer);
   else if(q.t==='ord')ok=JSON.stringify(G.ordAns.map(a=>a.w))===JSON.stringify(q.items);
   if(!ok)return;
-  G.correct++;G.done=true;
+  G.correct++;G.done=true;combo++;
+  if(!G.ach.maxCombo||combo>G.ach.maxCombo)G.ach.maxCombo=combo;
   if(q.t==='mc'||q.t==='tf'){const a=q.t==='tf'?(q.a?0:1):q.a;document.getElementById('o'+a).className='opt ok';document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
   else if(q.t==='wb'){G.wbAns.forEach(a=>{const el=$('w'+a.i);if(el)el.classList.add('ok')})}
   else if(q.t==='ord'){G.ordAns.forEach(a=>{const el=$('w'+a.i);if(el)el.classList.add('ok')})}
@@ -650,7 +893,12 @@ function checkNow(){
 }
 
 function showFb(ok,t,txt){const fb=$('lfb');fb.className='feedback sh '+(ok?'ok':'no');$('fbIcon').textContent=ok?'✓':'✗';$('fbTitle').textContent=t;$('fbDesc').textContent=txt}
-function addXP(){for(let i=0;i<3;i++){const p=document.createElement('div');p.className='xp-particle';p.textContent='+10 🪙';p.style.left=(35+Math.random()*30)+'%';p.style.top='40%';document.body.appendChild(p);setTimeout(()=>p.remove(),800)}}
+function addXP(){
+  const bonus=combo>=10?3:combo>=5?2:combo>=3?1.5:1;
+  const xp=Math.round(10*bonus);
+  G.xp+=xp;G.chips+=xp;
+  for(let i=0;i<(bonus>1?4:2);i++){const p=document.createElement('div');p.className='xp-particle';p.textContent=`+${xp} 🪙${combo>=3?' ×'+combo:''}`;p.style.left=(30+Math.random()*40)+'%';p.style.top='40%';document.body.appendChild(p);setTimeout(()=>p.remove(),800)}
+}
 
 function nextQ(){
   G.q++;const qs=L[G.lesson];
@@ -670,10 +918,10 @@ function showComp(){
   $('cTitle').textContent=G.lives===0?'Try Again!':perfect?'PERFECT HAND!':'Hand Complete!';
   $('cSub').textContent=G.lives===0?"Next one's yours":perfect?'Every call right!':'Building your stack';
   $('cXp').textContent=xp;$('cAcc').textContent=acc+'%';$('cTime').textContent=time+'s';
-  $('cMsg').textContent=`🔥 ${G.streak} day streak!${perfect?' 🌟 PERFECT!':''}`;
+  $('cMsg').textContent=`🔥 ${G.streak} day streak!${perfect?' 🌟 PERFECT!':''}${G.ach.maxCombo>=5?' ⚡ Best combo: '+G.ach.maxCombo:''}`;
   showScreen('complete');setTimeout(()=>{$('cBarFill').style.width=acc+'%'},300);
   const t=$('xpToast');t.textContent=`+${xp} chips 🪙`;t.classList.add('sh');setTimeout(()=>t.classList.remove('sh'),1500);
-}
+  checkAchievements();saveG();
 
 function finishL(){buildHome();showScreen('home')}
 function closeStreak(){$('streakOv').classList.remove('sh')}
