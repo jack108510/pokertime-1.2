@@ -479,7 +479,7 @@ const L={
 {t:'tf',p:'True or False: You should play the same range regardless of opponent.',a:false,ok:"False! Adapt to each opponent. That's exploitative poker.",no:'Adjust ranges based on opponent tendencies.'},
 {t:'mc',p:'"Set mining" means:',o:['Calling with a small pair hoping to hit three of a kind','Always folding small pairs','Raising with a pair'],a:0,ok:'Set mining = cheap call with pocket pair to hit a set!',no:'Set mining = calling with small PP hoping to flop trips.'},
 {t:'wb',p:'"Nut advantage" means having the ___ possible hand',bank:['best','worst','medium'],answer:['best'],ok:'Nut advantage = you can have the best hand, they can\'t!',no:'Nut advantage = having the absolute best combos.'}
-,
+],
 'multiway':[
 {t:'mc',p:'You have T♠ T♥ in a 4-way pot on K♦ 7♠ 4♣. You should:',d:'1',h:[{v:'T',s:'♠',c:'bk'},{v:'T',s:'♥',c:'r'},{v:'K',s:'♦',c:'r'},{v:'7',s:'♠',c:'bk'},{v:'4',s:'♣',c:'bk'}],o:['Check — too many opponents','Bet big — protect','Call any bet'],a:0,ok:'Multiway = someone likely has a King. Check and re-evaluate.',no:'Multiway pots reduce your equity dramatically.'},
 {t:'mc',p:'In a 3-way pot, your equity with a medium pair is roughly:',o:['One-third of heads-up equity','About the same as HU','Double'],a:0,ok:'Multiway equity drops sharply!',no:'More opponents = less equity per player.'},
@@ -922,6 +922,7 @@ function showComp(){
   showScreen('complete');setTimeout(()=>{$('cBarFill').style.width=acc+'%'},300);
   const t=$('xpToast');t.textContent=`+${xp} chips 🪙`;t.classList.add('sh');setTimeout(()=>t.classList.remove('sh'),1500);
   checkAchievements();saveG();
+}
 
 function finishL(){buildHome();showScreen('home')}
 function closeStreak(){$('streakOv').classList.remove('sh')}
