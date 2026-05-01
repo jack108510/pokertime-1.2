@@ -92,9 +92,9 @@ button,input,select{font-family:inherit;font-size:inherit}
 .lesson-body{flex:1;overflow-y:auto;padding:24px 20px}
 .lesson-prompt{font-size:20px;font-weight:800;color:var(--text);text-align:center;margin-bottom:24px;line-height:1.4}
 .lesson-cards{display:flex;justify-content:center;gap:8px;margin-bottom:24px;flex-wrap:wrap}
-.lcard{width:44px;height:62px;background:linear-gradient(145deg,#fff,#f0f0f0);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.3);position:relative}
+.lcard{width:44px;height:62px;background:linear-gradient(145deg,#fff,#f0f0f0);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 3px 10px rgba(0,0,0,.3);position:relative;font-family:'Segoe UI Symbol','Apple Color Emoji','Noto Color Emoji',sans-serif}
 .lcard.red{color:#e17055}.lcard.bk{color:#2d3436}
-.lcard .lv{font-size:18px;line-height:1}.lcard .ls{font-size:10px}
+.lcard .lv{font-size:20px;line-height:1}.lcard .ls{font-size:14px;line-height:1;margin-top:1px}
 .lcard-vs{font-size:13px;font-weight:800;color:var(--text-dim);display:flex;align-items:center;padding:0 8px}
 
 /* OPTIONS */
@@ -844,7 +844,7 @@ function renderLives(){
   $('lives').innerHTML=h;
 }
 
-function cH(c){return `<div class="lcard ${c.c}"><span class="lv">${c.v}</span><span class="ls">${c.s}</span></div>`}
+function cH(c){const suits={'♠':'&spades;','♥':'&hearts;','♦':'&diams;','♣':'&clubs;'};return `<div class="lcard ${c.c}"><span class="lv">${c.v}</span><span class="ls">${suits[c.s]||c.s}</span></div>`}
 function hH(h){return h.map(c=>cH(c)).join('')}
 
 function loadQ(){
