@@ -306,7 +306,6 @@ button,input,select{font-family:inherit;font-size:inherit}
 </div>
 <div class="lesson-body" id="lbody"></div>
 <div class="feedback" id="lfb"><div class="fb-icon" id="fbIcon"></div><div class="fb-text"><div class="fb-title" id="fbTitle"></div><div class="fb-desc" id="fbDesc"></div></div></div>
-<div class="continue-bar" id="contBar"><button class="continue-btn" id="contBtn" onclick="nextQ()">Continue</button></div>
 </div>
 
 <!-- COMPLETE -->
@@ -823,19 +822,55 @@ function startL(id){
   G.lesson=id;G.q=0;G.correct=0;G.lives=3;G.sel=null;G.done=false;G.t0=Date.now();G.mSel=null;G.mMatched=[];combo=0;
   showScreen('lesson');renderLives();showLessonIntro();
 }
+const LESSON_TIPS={
+'card-values':['Ace is the highest card, 2 is the lowest','Suit order (for tiebreaks): Spades > Hearts > Diamonds > Clubs','In most poker games, suits are equal — no suit beats another'],
+'hand-rankings':['Royal Flush > Straight Flush > Four of a Kind > Full House','Flush beats a Straight, Straight beats Three of a Kind','Always count: pair < two pair < trips < straight < flush'],
+'pot-odds':['Pot odds = (amount to call) / (total pot after you call)','Rule of 4 and 2: outs × 4 (flop to river) or × 2 (turn to river)','If pot odds are better than your card odds, calling is profitable'],
+'position':['Button (dealer) is the best position — you act last','UTG (Under the Gun) is worst — you act first with no info','Play 2-3x more hands on the Button than UTG'],
+'betting-basics':['Fold, Call, Raise, Check — the four actions','3-bet = re-raising the initial raiser','Limping (just calling the big blind) is usually weak play'],
+'bluffing':['Bluff when the board texture favors your range, not your hand','Semi-bluffing = betting with a draw that could improve','Bluff less against calling stations, bluff more against tight folders'],
+'ranges':['Never put an opponent on exactly one hand','Think in ranges — the full collection of hands they could have','Narrow the range street by street based on their actions'],
+'preflop':['Pre-flop is the most important street — get it right','Raise first in with top 15-20% of hands from early position','Late position: open wider, steal more blinds'],
+'gto-basics':['GTO = Game Theory Optimal — unexploitable baseline strategy','Balanced ranges have the right mix of value bets and bluffs','You don\'t need perfect GTO — just understand the concepts'],
+'tournament':['Tournament chips are not equal to cash — ICM matters','Survival matters more than chip accumulation on the bubble','Adjust ranges based on stack depth and payout structure'],
+'tells',['Betting timing is the most reliable online tell','Physical tells: chip handling, breathing, eye movement','A sudden change in behavior is more telling than any single action'],
+'advanced-strategy':['Squeeze play = 3-bet when there\'s a raiser + caller(s)','Overbets work best with polarized ranges (nuts or bluff)','Blockers = cards you hold that make certain opponent hands impossible'],
+'multiway':['Equity drops sharply with each additional opponent','Play tighter preflop — you need a stronger hand to continue','Bluffing is less effective — someone is more likely to call'],
+'board-texture':['Dry board = few draws possible (K-7-2 rainbow)','Wet board = many draws possible (J-T-9 two-tone)','Bet bigger on wet boards to charge draws'],
+'cbet-strategy':['Dry boards = high c-bet frequency (they miss too)','Wet boards without equity = check and give up','Double barrel on scare cards that help your range'],
+'short-stack':['10bb or less = push/fold only','SPR (Stack-to-Pot Ratio) determines commitment','Nash push/fold charts give mathematically optimal ranges'],
+'3bet-pot':['3-bet pots have narrower, stronger ranges','3-bettor has range advantage on most boards','Bet proportionally smaller — the pot is already inflated'],
+'exploit':['If they fold too much → bluff more','If they call too much → value bet wider, never bluff','Exploitative > GTO against weak players'],
+'range-balance':['A balanced range mixes value bets and bluffs','If you only bet strong hands, opponents fold everything','Adding bluffs makes your value bets more profitable'],
+'polarized':['Polarized = very strong hands + bluffs, nothing between','Merged = all strengths from weak to strong','Use big bets with polarized ranges, small bets with merged'],
+'bet-sizing':['Pot bet = opponent needs 33% equity to call','Small bets (25-33%) for thin value and blocking','Overbets (>pot) work with polarized ranges on certain textures'],
+'turn-river':['Turn = Fourth Street, River = Fifth Street','Completed draws on turn/river should change your approach','River value bets = bet when you expect worse hands to call'],
+'mental-game',['Tilt = emotional play from bad beats or frustration','Bankroll management prevents going broke during downswings','Judge decisions, not outcomes — process over results'],
+'hand-reading',['Start with preflop action, narrow on each street','Combinatorics: AK has 16 combos, AA has only 6','Blockers reduce opponent combos — use that info'],
+'final-table':['ICM dominates every final table decision','Folding strong hands can be correct for pay jumps','Chip leader should pressure medium stacks'],
+'bounty':['PKO = progressive knockout, bounties grow as you bust players','Bounty overlay means you need less equity to call','Target players with large bounties'],
+'mixed-games':['PLO = 4 hole cards, use exactly 2 from hand + 3 from board','7-Card Stud = no community cards, best 5 of 7 play','Razz = lowball stud, A-2-3-4-5 is the nuts'],
+'heads-up':['Button opens ~70-80% of hands','SB = Button in heads-up (acts first preflop, last postflop)','Position matters more HU than any other format'],
+'deep-run':['Big stack = apply pressure, don\'t risk it on coin flips','Tighten up on the bubble, loosen up with a big stack','Image management matters — same opponents for hours'],
+'championship':['Discipline > talent — sustained good decisions win','Even the best players lose most tournaments they enter','Preparation: study opponents, review hands, rest well']
+};
 function showLessonIntro(){
   const ls=MAP.flatMap(s=>s.ls).find(l=>l.id===G.lesson);
   const tip=ls?.tip||'Master this module to level up your game.';
   const lvl=MAP.find(s=>s.ls.some(l=>l.id===G.lesson))?.lvl||'';
+  const tips=LESSON_TIPS[G.lesson]||[];
   $('lbar').style.width='0%';
-  $('lfb').className='feedback';$('contBar').className='continue-bar';
-  $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
-    <div style="font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">${lvl}</div>
-    <div style="font-size:48px;margin-bottom:16px">${ls?.ic||'♠'}</div>
-    <h2 style="font-size:24px;font-weight:900;margin-bottom:12px">${ls?.n||G.lesson}</h2>
-    <p style="font-size:14px;color:var(--text-muted);line-height:1.6;max-width:300px;margin-bottom:24px">${tip}</p>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:24px">${L[G.lesson].length} questions · ${G.lives} lives</div>
-    <button class="intro-btn" style="animation:none;opacity:1" onclick="loadQ()">Let's Go</button>
+  $('lfb').className='feedback';
+  let tipsHtml=tips.map(t=>`<div style="display:flex;gap:10px;align-items:flex-start;text-align:left;margin-bottom:10px"><span style="color:var(--primary);font-weight:800;flex-shrink:0">›</span><span style="font-size:13px;color:var(--text-muted);line-height:1.5">${t}</span></div>`).join('');
+  $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;padding:20px 24px;overflow-y:auto">
+    <div style="font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">${lvl}</div>
+    <div style="text-align:center;margin-bottom:16px"><span style="font-size:40px">${ls?.ic||'♠'}</span></div>
+    <h2 style="font-size:22px;font-weight:900;text-align:center;margin-bottom:8px">${ls?.n||G.lesson}</h2>
+    <p style="font-size:13px;color:var(--text-muted);text-align:center;line-height:1.5;margin-bottom:20px">${tip}</p>
+    ${tips.length?`<div style="background:var(--surface2);border-radius:14px;padding:16px;margin-bottom:20px">${tipsHtml}</div>`:''}
+    <div style="text-align:center;font-size:12px;color:var(--text-dim);margin-bottom:16px">${L[G.lesson].length} questions · ${G.lives} lives</div>
+    <button class="intro-btn" style="animation:none;opacity:1" onclick="loadQ()">Start Quiz</button>
+    <button style="margin-top:10px;background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px" onclick="loadQ()">Skip Lesson →</button>
   </div>`;
 }
 
@@ -850,7 +885,7 @@ function hH(h){return h.map(c=>cH(c)).join('')}
 function loadQ(){
   const qs=L[G.lesson],q=qs[G.q];G.sel=null;G.done=false;G.mSel=null;G.mMatched=[];
   $('lbar').style.width=(G.q/qs.length*100)+'%';
-  $('lfb').className='feedback';$('contBar').className='continue-bar';
+  $('lfb').className='feedback';
   let h=`<div class="lesson-prompt">${q.p}</div>`;
   if(q.d==='vs')h+=`<div class="lesson-cards"><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[0])}</div><div class="lcard-vs">VS</div><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[1])}</div></div>`;
   else if(q.d==='1')h+=`<div class="lesson-cards" style="justify-content:center">${hH(q.h)}</div>`;
@@ -871,7 +906,7 @@ function selMatch(side,idx,val){
   if(G.mSel.side===side){$('m'+(G.mSel.side==='l'?'l':'r')+G.mSel.idx).classList.remove('sel');G.mSel={side,idx,val};$('m'+(side==='l'?'l':'r')+idx).classList.add('sel');return}
   const a=G.mSel.val,b=val,isMatch=G.mPairs.some(p=>(p[0]===a&&p[1]===b)||(p[0]===b&&p[1]===a));
   if(isMatch){$('m'+(G.mSel.side==='l'?'l':'r')+G.mSel.idx).classList.remove('sel');$('m'+(G.mSel.side==='l'?'l':'r')+G.mSel.idx).classList.add('matched');$('m'+(side==='l'?'l':'r')+idx).classList.add('matched');G.mMatched.push(a,b);G.mSel=null;
-    if(G.mMatched.length===G.mPairs.length*2){G.correct++;G.done=true;const q=L[G.lesson][G.q];showFb(true,'All matched! 🎉',q.ok);addXP();$('lbar').style.width=((G.q+1)/L[G.lesson].length*100)+'%';$('contBar').className='continue-bar sh';$('contBtn').className='continue-btn green';$('contBtn').textContent='Continue'}
+    if(G.mMatched.length===G.mPairs.length*2){G.correct++;G.done=true;const q=L[G.lesson][G.q];showFb(true,'All matched!',q.ok);addXP();$('lbar').style.width=((G.q+1)/L[G.lesson].length*100)+'%';setTimeout(nextQ,1200)}
   }else{const e1=$('m'+(G.mSel.side==='l'?'l':'r')+G.mSel.idx),e2=$('m'+(side==='l'?'l':'r')+idx);e1.classList.remove('sel');e1.classList.add('wrong');e2.classList.add('wrong');G.lives=Math.max(0,G.lives-1);renderLives();setTimeout(()=>{e1.classList.remove('wrong');e2.classList.remove('wrong')},500);G.mSel=null}
 }
 
@@ -881,7 +916,7 @@ function checkNow(){
   else if(q.t==='tf')ok=(G.sel===0&&q.a===true)||(G.sel===1&&q.a===false);
   else if(q.t==='wb')ok=JSON.stringify(G.wbAns.map(a=>a.w))===JSON.stringify(q.answer);
   else if(q.t==='ord')ok=JSON.stringify(G.ordAns.map(a=>a.w))===JSON.stringify(q.items);
-  if(!ok)return;
+  if(!ok){G.lives=Math.max(0,G.lives-1);renderLives();setTimeout(nextQ,1500);return}
   G.correct++;G.done=true;combo++;
   if(!G.ach.maxCombo||combo>G.ach.maxCombo)G.ach.maxCombo=combo;
   if(q.t==='mc'||q.t==='tf'){const a=q.t==='tf'?(q.a?0:1):q.a;document.getElementById('o'+a).className='opt ok';document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
@@ -889,7 +924,7 @@ function checkNow(){
   else if(q.t==='ord'){G.ordAns.forEach(a=>{const el=$('w'+a.i);if(el)el.classList.add('ok')})}
   showFb(true,'Correct!',q.ok);addXP();
   $('lbar').style.width=((G.q+1)/L[G.lesson].length*100)+'%';
-  $('contBar').className='continue-bar sh';$('contBtn').className='continue-btn green';$('contBtn').textContent='Continue';
+  setTimeout(nextQ,1200);
 }
 
 function showFb(ok,t,txt){const fb=$('lfb');fb.className='feedback sh '+(ok?'ok':'no');$('fbIcon').textContent=ok?'✓':'✗';$('fbTitle').textContent=t;$('fbDesc').textContent=txt}
