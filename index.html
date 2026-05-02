@@ -4,6 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <title>PokerTime — Learn Poker Fast</title>
+<meta name="description" content="Learn poker strategy in 5 minutes a day. Duolingo-style quizzes, 30 modules, spaced repetition. Free.">
+<meta name="theme-color" content="#0f0a1a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="PokerTime">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta property="og:title" content="PokerTime — Learn Poker Fast">
+<meta property="og:description" content="Master poker strategy in 5 min/day. 30 modules, combo streaks, spaced repetition.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:url" content="https://jack108510.github.io/pokertime-1.2/">
+<meta name="twitter:card" content="summary_large_image">
+<script async src="https://api.countapi.com/hit/pokertime/visits"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
@@ -965,6 +978,9 @@ function showComp(){
 function finishL(){buildHome();showScreen('home')}
 function closeStreak(){$('streakOv').classList.remove('sh')}
 function showStreak(){$('streakOv').classList.add('sh');$('sNum').textContent=G.streak}
+</script>
+<script>
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
 </script>
 </body>
 </html>
