@@ -105,10 +105,20 @@ button,input,select{font-family:inherit;font-size:inherit}
 .lesson-body{flex:1;overflow-y:auto;padding:24px 20px}
 .lesson-prompt{font-size:20px;font-weight:800;color:var(--text);text-align:center;margin-bottom:24px;line-height:1.4}
 .lesson-cards{display:flex;justify-content:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
-.lcard{width:52px;height:72px;background:linear-gradient(145deg,#fff,#f0f0f0);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 3px 12px rgba(0,0,0,.35);position:relative;font-family:'Segoe UI Symbol','Apple Color Emoji','Noto Color Emoji',sans-serif}
+.lcard{width:56px;height:78px;background:linear-gradient(145deg,#fff,#f0f0f0);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:900;box-shadow:0 4px 16px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.8);position:relative;font-family:'Segoe UI Symbol','Apple Color Emoji','Noto Color Emoji',sans-serif;border:1px solid rgba(0,0,0,.08)}
 .lcard.red{color:#e17055}.lcard.bk{color:#2d3436}
-.lcard .lv{font-size:22px;line-height:1}.lcard .ls{font-size:16px;line-height:1;margin-top:2px}
+.lcard .lv{font-size:24px;line-height:1}.lcard .ls{font-size:18px;line-height:1;margin-top:2px}
 .lcard-vs{font-size:15px;font-weight:800;color:var(--text-muted);display:flex;align-items:center;padding:0 12px}
+.lcard.large{width:68px;height:95px}.lcard.large .lv{font-size:30px}.lcard.large .ls{font-size:22px}
+
+/* HAND LABEL */
+.hand-label{font-size:11px;font-weight:700;color:var(--text-muted);text-align:center;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
+
+/* SCENARIO */
+.scenario-box{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:20px;text-align:center}
+.scenario-label{font-size:10px;font-weight:700;color:var(--primary);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.scenario-text{font-size:13px;color:var(--text-muted);line-height:1.5}
+.scenario-text b{color:var(--text)}
 
 /* OPTIONS */
 .opts{display:flex;flex-direction:column;gap:8px}
@@ -116,7 +126,7 @@ button,input,select{font-family:inherit;font-size:inherit}
 .opt:hover{border-color:var(--primary);background:var(--surface3)}
 .opt:active{transform:scale(.98)}
 .opt.sel{border-color:var(--primary);background:var(--primary-glow);box-shadow:0 0 20px var(--primary-glow)}
-.opt.ok{border-color:var(--success);background:var(--success-dim);color:var(--success)}
+.opt.ok{border-color:var(--success);background:var(--success-dim);color:var(--success);transform:scale(1.02);box-shadow:0 0 20px var(--success-dim)}
 .opt.no{border-color:var(--danger);background:var(--danger-dim);color:var(--danger);animation:shake .4s ease}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
@@ -968,18 +978,22 @@ function showLessonIntro(){
   const ls=MAP.flatMap(s=>s.ls).find(l=>l.id===G.lesson);
   const tip=ls?.tip||'Master this module to level up your game.';
   const lvl=MAP.find(s=>s.ls.some(l=>l.id===G.lesson))?.lvl||'';
-  const tips=LESSON_TIPS[G.lesson]||[];
   $('lbar').style.width='0%';
   $('lfb').className='feedback';
-  let tipsHtml=tips.map(t=>`<div style="display:flex;gap:10px;align-items:flex-start;text-align:left;margin-bottom:10px"><span style="color:var(--primary);font-weight:800;flex-shrink:0">›</span><span style="font-size:13px;color:var(--text-muted);line-height:1.5">${t}</span></div>`).join('');
+  const sampleQ=L[G.lesson][0];
+  let preview='';
+  if(sampleQ.h){
+    if(sampleQ.d==='vs')preview=`<div style="display:flex;gap:6px;align-items:center;justify-content:center;margin-bottom:16px"><div style="display:flex;gap:4px">${hH(sampleQ.h[0])}</div><div class="lcard-vs">VS</div><div style="display:flex;gap:4px">${hH(sampleQ.h[1])}</div></div>`;
+    else preview=`<div style="display:flex;gap:4px;justify-content:center;margin-bottom:16px">${hH(sampleQ.h)}</div>`;
+  }
   $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;padding:20px 24px;overflow-y:auto">
-    <div style="font-size:10px;font-weight:800;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px">${lvl}</div>
-    <div style="text-align:center;margin-bottom:14px"><span style="font-size:32px">${ls?.ic||'♠'}</span></div>
-    <h2 style="font-size:20px;font-weight:900;text-align:center;margin-bottom:6px">${ls?.n||G.lesson}</h2>
-    <p style="font-size:13px;color:var(--text-muted);text-align:center;line-height:1.6;margin-bottom:18px">${tip}</p>
-    ${tips.length?`<div style="background:var(--surface2);border-radius:14px;padding:14px;margin-bottom:18px">${tipsHtml}</div>`:''}
-    <div style="text-align:center;font-size:13px;color:var(--text-muted);margin-bottom:18px">${L[G.lesson].length} questions · ${G.lives} lives</div>
-    <button class="intro-btn" style="animation:none;opacity:1" onclick="loadQ()">Start Quiz</button>
+    <div style="font-size:10px;font-weight:800;color:var(--primary);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px">${lvl}</div>
+    <div style="text-align:center;margin-bottom:12px"><span style="font-size:40px;display:inline-block;width:72px;height:72px;line-height:72px;border-radius:50%;background:var(--primary-glow);border:2px solid var(--primary)">${ls?.ic||'♠'}</span></div>
+    <h2 style="font-size:24px;font-weight:900;text-align:center;margin-bottom:8px">${ls?.n||G.lesson}</h2>
+    <p style="font-size:14px;color:var(--text-muted);text-align:center;line-height:1.6;margin-bottom:16px">${tip}</p>
+    ${preview}
+    <div style="text-align:center;font-size:13px;color:var(--text-dim);margin-bottom:24px">${L[G.lesson].length} questions · ${G.lives} lives</div>
+    <button class="intro-btn" style="animation:none;opacity:1" onclick="loadQ()">Deal Me In</button>
     <button style="margin-top:14px;background:none;border:none;color:var(--text-dim);font-size:13px;font-weight:600;cursor:pointer;padding:12px" onclick="quitL()">Skip for now</button>
   </div>`;
 }
@@ -996,13 +1010,17 @@ function loadQ(){
   const qs=L[G.lesson],q=qs[G.q];G.sel=null;G.done=false;G.mSel=null;G.mMatched=[];
   $('lbar').style.width=(G.q/qs.length*100)+'%';
   $('lfb').className='feedback';
-  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><span style="font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">Question ${G.q+1}/${qs.length}</span><span style="font-size:13px;font-weight:700;color:var(--accent)">${combo>=3?'⚡ '+combo+' streak':''}</span></div>`;
+  let h=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px"><span style="font-size:13px;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:1px">Q${G.q+1}/${qs.length}</span><span style="font-size:13px;font-weight:700;color:var(--accent)">${combo>=3?'⚡ '+combo:''}</span></div>`;
   h+=`<div class="lesson-prompt">${q.p}</div>`;
-  if(q.d==='vs')h+=`<div class="lesson-cards"><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[0])}</div><div class="lcard-vs">VS</div><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[1])}</div></div>`;
-  else if(q.d==='1')h+=`<div class="lesson-cards" style="justify-content:center">${hH(q.h)}</div>`;
+  if(q.d==='vs'){
+    h+=`<div class="lesson-cards"><div style="text-align:center"><div class="hand-label">Your hand</div><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[0])}</div></div><div class="lcard-vs">VS</div><div style="text-align:center"><div class="hand-label">Opponent</div><div style="display:flex;gap:6px;justify-content:center">${hH(q.h[1])}</div></div></div>`;
+  }
+  else if(q.d==='1'){
+    h+=`<div class="lesson-cards" style="justify-content:center"><div style="text-align:center"><div class="hand-label">Board</div><div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap">${hH(q.h)}</div></div></div>`;
+  }
   if(q.t==='mc'||q.t==='tf'){const opts=q.t==='tf'?['True','False']:q.o;h+='<div class="opts">';opts.forEach((o,i)=>h+=`<button class="opt" id="o${i}" onclick="selMC(${i})">${o}</button>`);h+='</div>'}
   else if(q.t==='wb'){h+=`<div class="ans-area" id="ansArea"></div><div class="ans-sub">Tap the correct word</div><div class="wb-area" id="wbArea">`;const bank=[...q.bank].sort(()=>Math.random()-.5);bank.forEach((w,i)=>h+=`<button class="wb-word" id="w${i}" onclick="selWB(${i},'${w}')">${w}</button>`);h+='</div>';G.wbBank=bank;G.wbAns=[]}
-  else if(q.t==='ord'){h+=`<div class="ans-area" id="ansArea"></div><div class="ans-sub">Tap in correct order</div><div class="wb-area" id="wbArea">`;const items=[...q.items].sort(()=>Math.random()-.5);items.forEach((w,i)=>h+=`<button class="wb-word" id="w${i}" onclick="selOrd(${i},'${w}')">${w}</button>`);h+='</div>';G.ordItems=items;G.ordAns=[]}
+  else if(q.t==='ord'){h+=`<div class="ans-area" id="ansArea"></div><div class="ans-sub">Tap in order (lowest first)</div><div class="wb-area" id="wbArea">`;const items=[...q.items].sort(()=>Math.random()-.5);items.forEach((w,i)=>h+=`<button class="wb-word" id="w${i}" onclick="selOrd(${i},'${w}')">${w}</button>`);h+='</div>';G.ordItems=items;G.ordAns=[]}
   else if(q.t==='match'){const left=q.pairs.map(p=>p[0]).sort(()=>Math.random()-.5),right=q.pairs.map(p=>p[1]).sort(()=>Math.random()-.5);h+='<div class="mp-grid" id="mpArea">';for(let i=0;i<left.length;i++){h+=`<button class="mp-btn" id="ml${i}" onclick="selMatch('l',${i},'${left[i]}')">${left[i]}</button><button class="mp-btn" id="mr${i}" onclick="selMatch('r',${i},'${right[i]}')">${right[i]}</button>`}h+='</div>';G.mPairs=q.pairs;G.mLeft=left;G.mRight=right}
   $('lbody').innerHTML=h;
 }
@@ -1064,8 +1082,16 @@ function showComp(){
   $('cTitle').textContent=G.lives===0?'Try Again!':perfect?'PERFECT HAND!':'Hand Complete!';
   $('cSub').textContent=G.lives===0?"Next one's yours":perfect?'Every call right!':'Building your stack';
   $('cXp').textContent=xp;$('cAcc').textContent=acc+'%';$('cTime').textContent=time+'s';
-  $('cMsg').textContent=`🔥 ${G.streak} day streak!${perfect?' 🌟 PERFECT!':''}${G.ach.maxCombo>=5?' ⚡ Best combo: '+G.ach.maxCombo:''}`;
-  showScreen('complete');setTimeout(()=>{$('cBarFill').style.width=acc+'%'},300);
+  $('cMsg').textContent=G.lives===0?'Heads up — review this topic again.':perfect?'Flawless. You own this.':`🔥 ${G.streak} day streak!${G.ach.maxCombo>=5?' ⚡ Best combo: '+G.ach.maxCombo:''}`;
+  // Session recap
+  let recap='';
+  const weakInLesson=Object.entries(G.weak).filter(([id])=>id===G.lesson&&G.weak[G.lesson]<80);
+  if(G.lives===0||G.correct<qs.length*0.7){
+    recap=`<div style="background:var(--danger-dim);border:1px solid var(--danger);border-radius:12px;padding:14px;margin-top:12px;text-align:center"><div style="font-size:13px;font-weight:800;color:var(--danger);margin-bottom:4px">Needs Work</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">You got ${G.correct}/${total} right. Try this lesson again — repetition builds recall.</div></div>`;
+  } else if(!perfect){
+    recap=`<div style="background:var(--accent-dim);border:1px solid var(--accent);border-radius:12px;padding:14px;margin-top:12px;text-align:center"><div style="font-size:13px;font-weight:800;color:var(--accent);margin-bottom:4px">Almost There</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5">Solid work. A few more rounds and this'll be automatic.</div></div>`;
+  }
+  $('cMsg').innerHTML+=recap;  showScreen('complete');setTimeout(()=>{$('cBarFill').style.width=acc+'%'},300);
   const t=$('xpToast');t.textContent=`+${xp} chips 🪙`;t.classList.add('sh');setTimeout(()=>t.classList.remove('sh'),1500);
   checkAchievements();saveG();
 }
