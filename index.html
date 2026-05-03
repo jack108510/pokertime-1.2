@@ -413,8 +413,8 @@ const G={xp:0,lives:3,streak:0,chips:250,q:0,correct:0,sel:null,done:false,t0:0,
 const DAY=24*60*60*1000;
 const SRS_KEY='pokertime_save_v2';
 function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
-function saveG(){localStorage.setItem(SRS_KEY,JSON.stringify({xp:G.xp,streak:G.streak,chips:G.chips,completed:G.completed,srs:G.srs,lastStudyDay:G.lastStudyDay,surveyDone:G.surveyDone,surveyScores:G.surveyScores,weak:G.weak,ach:G.ach,welcomeDone:G.welcomeDone}))}
-function loadG(){try{const r=localStorage.getItem(SRS_KEY);if(!r)return;const d=JSON.parse(r);G.xp=d.xp||0;G.streak=d.streak||0;G.chips=d.chips||250;G.completed=d.completed||{};G.srs=d.srs||{};G.lastStudyDay=d.lastStudyDay||null;G.surveyDone=!!d.surveyDone;G.surveyScores=d.surveyScores||{svPlay:null,svRank:null,svOdds:null};G.weak=d.weak||{};G.ach=d.ach||{};G.welcomeDone=!!d.welcomeDone}catch(e){}}
+function saveG(){localStorage.setItem(SRS_KEY,JSON.stringify({xp:G.xp,streak:G.streak,chips:G.chips,completed:G.completed,srs:G.srs,lastStudyDay:G.lastStudyDay,surveyDone:G.surveyDone,surveyScores:G.surveyScores,weak:G.weak,ach:G.ach,welcomeDone:G.welcomeDone,pro:G.pro||false}))}
+function loadG(){try{const r=localStorage.getItem(SRS_KEY);if(!r)return;const d=JSON.parse(r);G.xp=d.xp||0;G.streak=d.streak||0;G.chips=d.chips||250;G.completed=d.completed||{};G.srs=d.srs||{};G.lastStudyDay=d.lastStudyDay||null;G.surveyDone=!!d.surveyDone;G.surveyScores=d.surveyScores||{svPlay:null,svRank:null,svOdds:null};G.weak=d.weak||{};G.ach=d.ach||{};G.welcomeDone=!!d.welcomeDone;G.pro=!!d.pro}catch(e){}}
 function ensureSrs(id){if(!G.srs[id])G.srs[id]={interval:1,ease:2.5,due:0,reps:0};return G.srs[id]}
 function isDue(id){const r=ensureSrs(id);return !r.due||Date.now()>=r.due}
 function scheduleLesson(id,acc){const r=ensureSrs(id);if(acc>=85){r.reps=(r.reps||0)+1;r.ease=Math.min(3,Math.max(1.3,(r.ease||2.5)+0.1));r.interval=r.reps===1?1:r.reps===2?3:Math.round((r.interval||1)*r.ease)}else{r.reps=0;r.ease=Math.max(1.3,(r.ease||2.5)-0.2);r.interval=1}r.due=Date.now()+r.interval*DAY}
@@ -937,8 +937,35 @@ function checkAchievements(){
   });
 }
 
+function isPro(){return !!G.pro}
+function checkPro(id){
+  if(isPro())return true;
+  // Level 1 modules are free
+  const l1Ids=MAP[0].ls.map(l=>l.id);
+  if(l1Ids.includes(id))return true;
+  // Show paywall
+  showPaywall(id);
+  return false;
+}
+function showPaywall(id){
+  const ls=MAP.flatMap(s=>s.ls).find(l=>l.id===id);
+  $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center">
+    <div style="font-size:56px;margin-bottom:16px">🔒</div>
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#ffd93d,#6c5ce7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Unlock ${ls?.n||'this module'}</h2>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;max-width:280px">Get all 30 modules, weakness tracking, and advanced strategy content with PokerTime Pro.</p>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;width:100%;max-width:280px">
+      <div style="font-size:24px;font-weight:900;color:var(--accent)">$4.99<span style="font-size:14px;color:var(--text-muted);font-weight:600">/month</span></div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">All 30 modules · No limits · Cancel anytime</div>
+    </div>
+    <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Upgrade to Pro</a>
+    <button onclick="showScreen('home');buildHome()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px">Back to free lessons</button>
+  </div>`;
+  showScreen('lesson');
+}
+
 function startL(id){
   if(!L[id])return;
+  if(!checkPro(id))return;
   G.lesson=id;G.q=0;G.correct=0;G.lives=3;G.sel=null;G.done=false;G.t0=Date.now();G.mSel=null;G.mMatched=[];combo=0;
   showScreen('lesson');renderLives();showLessonIntro();
 }
