@@ -883,7 +883,7 @@ function startApp(){
   // Refill hearts if timer passed
   refillHearts();
   showScreen('home');buildHome();
-  if(!G.welcomeDone)$('welcomeOv').classList.add('sh');
+  if(!G.welcomeDone&&!G.surveyDone)$('welcomeOv').classList.add('sh');
   else if(!G.surveyDone)$('surveyOv').classList.add('sh');
 }
 function refillHearts(){
