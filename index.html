@@ -127,7 +127,7 @@ button,input,select{font-family:inherit;font-size:inherit}
 .opt:active{transform:scale(.98)}
 .opt.sel{border-color:var(--primary);background:var(--primary-glow);box-shadow:0 0 20px var(--primary-glow)}
 .opt.ok{border-color:var(--success);background:var(--success-dim);color:var(--success);transform:scale(1.02);box-shadow:0 0 20px var(--success-dim)}
-.opt.no{border-color:var(--danger);background:var(--danger-dim);color:var(--danger);animation:shake .4s ease}
+.opt.no{border-color:var(--danger);background:var(--danger-dim);color:var(--danger);animation:shake .4s ease;font-weight:900;box-shadow:0 0 20px var(--danger-dim);transform:scale(1.02)}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 
 /* WORD BANK */
@@ -157,7 +157,7 @@ button,input,select{font-family:inherit;font-size:inherit}
 .feedback.ok .fb-icon{background:var(--success-dim);color:var(--success)}
 .feedback.no .fb-icon{background:var(--danger-dim);color:var(--danger)}
 .fb-text{flex:1}
-.fb-title{font-size:14px;font-weight:800}.feedback.ok .fb-title{color:var(--success)}.feedback.no .fb-title{color:var(--danger)}
+.fb-title{font-size:18px;font-weight:900}.feedback.ok .fb-title{color:var(--success)}.feedback.no .fb-title{color:var(--danger)}
 .fb-desc{font-size:12px;color:var(--text-muted);margin-top:3px;line-height:1.45}
 
 /* CONTINUE */
@@ -426,7 +426,7 @@ const L={
 {t:'ord',p:'Rank LOWEST to HIGHEST:',items:['Jack','King','Ace','Queen'],ok:'J → Q → K → A!',no:'Jack < Queen < King < Ace'},
 {t:'mc',p:'Both have a pair. Who wins?',d:'vs',h:[[{v:'K',s:'♠',c:'bk'},{v:'K',s:'♥',c:'r'},{v:'9',s:'♦',c:'r'}],[{v:'J',s:'♠',c:'bk'},{v:'J',s:'♥',c:'r'},{v:'A',s:'♦',c:'r'}]],o:['Pair of Kings wins','Pair of Jacks wins','Tie'],a:0,ok:'Kings > Jacks. Higher pair always wins!',no:'Higher pair beats lower pair.'},
 {t:'mc',p:'Both have the same pair. What decides?',d:'vs',h:[[{v:'9',s:'♠',c:'bk'},{v:'9',s:'♥',c:'r'},{v:'A',s:'♦',c:'r'}],[{v:'9',s:'♣',c:'bk'},{v:'9',s:'♦',c:'r'},{v:'Q',s:'♠',c:'bk'}]],o:['First hand — Ace kicker','Second hand — Queen kicker','Split pot'],a:0,ok:'Ace kicker beats Queen kicker!',no:'When pairs tie, the highest side card wins.'},
-{t:'tf',p:'True or False: A Jack beats a Queen.',d:'vs',h:[[{v:'J',s:'♠',c:'bk'},{v:'Q',s:'♥',c:'r'}],[]],a:false,ok:'Queen > Jack!',no:'Q is higher than J.'},
+{t:'tf',p:'True or False: A Jack beats a Queen.',d:'1',h:[{v:'J',s:'♠',c:'bk'},{v:'Q',s:'♥',c:'r'}],a:false,ok:'Queen beats Jack! Q is higher.',no:'Queen is HIGHER than Jack. You got this wrong — remember: 10, Jack, Queen, King, Ace.'},
 {t:'ord',p:'Full rank order, LOW → HIGH:',items:['10','Jack','Queen','King','Ace'],ok:'10 → J → Q → K → A!',no:'10 < J < Q < K < A'},
 {t:'mc',p:"You have 7♣ 2♠. Opponent shows K♥ Q♦. Preflop, who's ahead?",d:'vs',h:[[{v:'7',s:'♣',c:'bk'},{v:'2',s:'♠',c:'bk'}],[{v:'K',s:'♥',c:'r'},{v:'Q',s:'♦',c:'r'}]],o:['You (7-2)','Opponent (K-Q)','Coin flip'],a:1,ok:"K-Q crushes 7-2. That's why 7-2 is the worst hand!",no:'High cards dominate low cards preflop.'}
 ],
@@ -501,7 +501,7 @@ const L={
 {t:'mc',p:"UTG raises. You're in MP with A♦ 10♦. What's the concern?",d:'1',h:[{v:'A',s:'♦',c:'r'},{v:'10',s:'♦',c:'r'}],o:['Dominated by A-K, A-Q, A-J from UTG','No concern — A-10 is great','Only worried about pocket pairs'],a:0,ok:'A-T looks pretty but is crushed by better aces from early position!',no:"UTG range has lots of hands that dominate A-T."},
 {t:'mc',p:'You open raise from the Cut-off. How wide should your range be?',o:['Top ~30% of hands','Top ~10% only','Any two cards'],a:0,ok:'CO opens ~30% — wider than EP, tighter than Button!',no:'Late position = wider opening range.'},
 {t:'mc',p:"Everyone folds to you in the SB. You have Q♠ 9♦. Action?",d:'1',h:[{v:'Q',s:'♠',c:'bk'},{v:'9',s:'♦',c:'r'}],o:['Raise — steal attempt','Fold — garbage hand','Limp — see a cheap flop'],a:0,ok:'Q-9 is ahead of random BB range — raise to steal!',no:'SB vs BB = wider ranges, Q-9 is good enough.'},
-{t:'mc',p:'A tight player 3-bets you from the BB. You raised with K♣ J♣ from CO. Your play?',d:'1',h:[{v:'K',s:'♣',c:'bk'},{v:'J',s:'♣',c:'bk'}],o:['Fold — dominated vs tight 3-bet range','Call — see the flop','4-bet — fight back'],a:0,ok:'Tight 3-bettor has QQ+ and AK — K-J is crushed.',no:'Against tight players, fold dominated hands to 3-bets.'},
+{t:'mc',p:'Ace tight player 3-bets you from the BB. You raised with K♣ J♣ from CO. Your play?',d:'1',h:[{v:'K',s:'♣',c:'bk'},{v:'J',s:'♣',c:'bk'}],o:['Fold — dominated vs tight 3-bet range','Call — see the flop','4-bet — fight back'],a:0,ok:'Tight 3-bettor has QQ+ and AK — K-J is crushed.',no:'Against tight players, fold dominated hands to 3-bets.'},
 {t:'mc',p:"You have 5♣ 5♦ in early position. What's the plan?",d:'1',h:[{v:'5',s:'♣',c:'bk'},{v:'5',s:'♦',c:'r'}],o:['Raise or fold — set mine for cheap','Always call','Always go all-in'],a:0,ok:'Small pairs = raise cheaply, flop a set or get out!',no:'Set mining: see a cheap flop, hit 3-of-a-kind or fold.'}
 ],
 'gto-basics':[
@@ -525,7 +525,7 @@ const L={
 {t:'tf',p:'True or False: A bigger stack should bully shorter stacks on the bubble.',a:true,ok:"Big stack = leverage. Short stacks can't risk busting!",no:'Big stacks should pressure short stacks near the bubble.'}
 ],
 'tells':[
-{t:'mc',p:'A "tell" is:',o:['A clue about hand strength','A bet type','Table talk'],a:0,ok:'Tells leak information!',no:'Tells = involuntary signals.'},
+{t:'mc',p:'Ace "tell" is:',o:['A clue about hand strength','A bet type','Table talk'],a:0,ok:'Tells leak information!',no:'Tells = involuntary signals.'},
 {t:'tf',p:'True or False: Online poker has tells.',a:true,ok:'Timing + sizing = online tells!',no:'Timing and bet sizing are real tells.'},
 {t:'mc',p:'Quick bet often means:',o:['Strong hand (planned)','Weak hand','Nothing'],a:0,ok:'Fast = already decided = strong.',no:'Quick action = strong hand.'},
 {t:'match',p:'Match tells:',pairs:[['Quick bet','Strong (planned)'],['Long tank','Genuinely unsure'],['Sizing change','Deviation']],ok:'Reading like a pro!',no:'Quick=strong, Tank=thinking, Change=deviation.'},
@@ -538,7 +538,7 @@ const L={
 {t:'mc',p:'"Squeeze play" is:',o:['3-betting after a raiser and caller','Calling twice','Folding to a raise'],a:0,ok:'Squeeze = 3-bet with dead money in the pot!',no:"Squeeze = 3-bet when there's a caller creating dead money."},
 {t:'tf',p:'True or False: "Overbetting" is always a mistake.',a:false,ok:'False! Overbets are powerful with polarized ranges.',no:'Overbets are a legitimate GTO tool.'},
 {t:'mc',p:'"Slowplaying" (trapping) is best when:',o:['Board is dry and you have the nuts','Board is very wet','You have a medium hand'],a:0,ok:'Slowplay on dry boards where opponents can\'t have much.',no:'Trap on dry boards where draws are unlikely.'},
-{t:'wb',p:'A "donk bet" leads into the ___',bank:['preflop raiser','big blind','small blind'],answer:['preflop raiser'],ok:'Donk = leading into the raiser!',no:'Donk bet = betting into the preflop raiser.'},
+{t:'wb',p:'Ace "donk bet" leads into the ___',bank:['preflop raiser','big blind','small blind'],answer:['preflop raiser'],ok:'Donk = leading into the raiser!',no:'Donk bet = betting into the preflop raiser.'},
 {t:'mc',p:'"Block betting" (blocking bet) is:',o:['A small bet to control pot size and see a cheap card','A huge bet','Checking'],a:0,ok:'Block bet = cheap way to see next card.',no:'Small bet to control pot size and avoid facing a big bet.'},
 {t:'mc',p:'"Iso-raise" means:',o:['Raising to isolate a weak player/limper','Calling a raise','Going all-in'],a:0,ok:'Iso = raise to isolate weak player heads-up!',no:'Isolation raise = target a weak player.'},
 {t:'ord',p:'Hand reading process:',items:['Observe preflop action','Narrow range on flop','Refine on turn','Decide on river'],ok:'Systematic hand reading!',no:'PF action → Flop narrow → Turn refine → River decide.'},
@@ -746,7 +746,7 @@ const MAP=[
 {id:'exploit',ic:'⚡',n:'Exploitative Play',q:8,tip:'GTO is the baseline, but exploitative play maximizes profit against real opponents with real tendencies.'},
 ]},
 {lvl:'LEVEL 4 — EXPERT',ls:[
-{id:'range-balance',ic:'⚖️',n:'Range Balancing',q:8,tip:'A balanced range has the right mix of value and bluffs so opponents can\'t exploit you. Critical at higher stakes.'},
+{id:'range-balance',ic:'⚖️',n:'Range Balancing',q:8,tip:'Ace balanced range has the right mix of value and bluffs so opponents can\'t exploit you. Critical at higher stakes.'},
 {id:'polarized',ic:'🔺',n:'Polarized Ranges',q:8,tip:'Polarized means nuts or air. Merged means everything in between. Knowing which to use is an art.'},
 {id:'bet-sizing',ic:'📏',n:'Bet Sizing Theory',q:8,tip:'Small bets, big bets, overbets — each size serves a purpose. Master sizing and you control the pot.'},
 {id:'turn-river',ic:'🌊',n:'Turn & River Play',q:8,tip:'The later streets are where pots get huge. Learn to navigate turn decisions and river value bets.'},
@@ -1095,7 +1095,7 @@ function checkNow(){
   else if(q.t==='tf')ok=(G.sel===0&&q.a===true)||(G.sel===1&&q.a===false);
   else if(q.t==='wb')ok=JSON.stringify(G.wbAns.map(a=>a.w))===JSON.stringify(q.answer);
   else if(q.t==='ord')ok=JSON.stringify(G.ordAns.map(a=>a.w))===JSON.stringify(q.items);
-  if(!ok){if(!useHeart())return;G.lives=Math.max(0,G.lives-1);renderLives();vibrate('no');setTimeout(nextQ,1500);return}
+  if(!ok){if(!useHeart())return;G.lives=Math.max(0,G.lives-1);renderLives();vibrate('no');showFb(false,'WRONG!',q.no);setTimeout(nextQ,2500);return}
   G.correct++;G.done=true;combo++;
   if(!G.ach.maxCombo||combo>G.ach.maxCombo)G.ach.maxCombo=combo;
   if(q.t==='mc'||q.t==='tf'){const a=q.t==='tf'?(q.a?0:1):q.a;document.getElementById('o'+a).className='opt ok';document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
@@ -1127,10 +1127,12 @@ function showComp(){
   const day=todayKey();if(G.lastStudyDay!==day){G.streak++;G.lastStudyDay=day}
   G.completed[G.lesson]=true;
   const acc=Math.round(G.correct/total*100),time=Math.round((Date.now()-G.t0)/1000),perfect=acc===100;
-  scheduleLesson(G.lesson,acc);G.weak[G.lesson]=acc;if(acc===100)G.ach.perfect=(G.ach.perfect||0)+1;saveG();
-  $('cIcon').textContent=G.lives===0?'💪':perfect?'🌟':'🃏';
-  $('cTitle').textContent=G.lives===0?'Try Again!':perfect?'PERFECT HAND!':'Hand Complete!';
-  $('cSub').textContent=G.lives===0?"Next one's yours":perfect?'Every call right!':'Building your stack';
+  scheduleLesson(G.lesson,acc);G.weak[G.lesson]=acc;
+  if(acc>=70)G.completed[G.lesson]=true; // Only mark complete if 70%+ accuracy
+  if(acc===100)G.ach.perfect=(G.ach.perfect||0)+1;saveG();
+  $('cIcon').textContent=acc<70?'❌':G.lives===0?'💪':perfect?'🌟':'🃏';
+  $('cTitle').textContent=acc<70?'FAILED':G.lives===0?'Try Again!':perfect?'PERFECT HAND!':'Hand Complete!';
+  $('cSub').textContent=acc<70?`${acc}% — need 70% to pass`:G.lives===0?"Next one's yours":perfect?'Every call right!':'Building your stack';
   $('cXp').textContent=xp;$('cAcc').textContent=acc+'%';$('cTime').textContent=time+'s';
   $('cMsg').textContent=G.lives===0?'Heads up — review this topic again.':perfect?'Flawless. You own this.':`🔥 ${G.streak} day streak!${G.ach.maxCombo>=5?' ⚡ Best combo: '+G.ach.maxCombo:''}`;
   // Session recap
