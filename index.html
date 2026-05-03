@@ -409,12 +409,12 @@ button,input,select{font-family:inherit;font-size:inherit}
 <div class="xp-toast" id="xpToast"></div>
 
 <script>
-const G={xp:0,lives:3,streak:0,chips:250,q:0,correct:0,sel:null,done:false,t0:0,lesson:null,completed:{},mSel:null,mMatched:[],srs:{},lastStudyDay:null,surveyDone:false,surveyScores:{svPlay:null,svRank:null,svOdds:null},weak:{},ach:{},welcomeDone:false};
+const G={xp:0,lives:3,streak:0,chips:250,q:0,correct:0,sel:null,done:false,t0:0,lesson:null,completed:{},mSel:null,mMatched:[],srs:{},lastStudyDay:null,surveyDone:false,surveyScores:{svPlay:null,svRank:null,svOdds:null},weak:{},ach:{},welcomeDone:false,pro:false,hearts:5,heartsRefillAt:null};
 const DAY=24*60*60*1000;
 const SRS_KEY='pokertime_save_v2';
 function todayKey(){const d=new Date();return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`}
-function saveG(){localStorage.setItem(SRS_KEY,JSON.stringify({xp:G.xp,streak:G.streak,chips:G.chips,completed:G.completed,srs:G.srs,lastStudyDay:G.lastStudyDay,surveyDone:G.surveyDone,surveyScores:G.surveyScores,weak:G.weak,ach:G.ach,welcomeDone:G.welcomeDone,pro:G.pro||false}))}
-function loadG(){try{const r=localStorage.getItem(SRS_KEY);if(!r)return;const d=JSON.parse(r);G.xp=d.xp||0;G.streak=d.streak||0;G.chips=d.chips||250;G.completed=d.completed||{};G.srs=d.srs||{};G.lastStudyDay=d.lastStudyDay||null;G.surveyDone=!!d.surveyDone;G.surveyScores=d.surveyScores||{svPlay:null,svRank:null,svOdds:null};G.weak=d.weak||{};G.ach=d.ach||{};G.welcomeDone=!!d.welcomeDone;G.pro=!!d.pro}catch(e){}}
+function saveG(){localStorage.setItem(SRS_KEY,JSON.stringify({xp:G.xp,streak:G.streak,chips:G.chips,completed:G.completed,srs:G.srs,lastStudyDay:G.lastStudyDay,surveyDone:G.surveyDone,surveyScores:G.surveyScores,weak:G.weak,ach:G.ach,welcomeDone:G.welcomeDone,pro:G.pro||false,hearts:G.hearts,heartsRefillAt:G.heartsRefillAt}))}
+function loadG(){try{const r=localStorage.getItem(SRS_KEY);if(!r)return;const d=JSON.parse(r);G.xp=d.xp||0;G.streak=d.streak||0;G.chips=d.chips||250;G.completed=d.completed||{};G.srs=d.srs||{};G.lastStudyDay=d.lastStudyDay||null;G.surveyDone=!!d.surveyDone;G.surveyScores=d.surveyScores||{svPlay:null,svRank:null,svOdds:null};G.weak=d.weak||{};G.ach=d.ach||{};G.welcomeDone=!!d.welcomeDone;G.pro=!!d.pro;G.hearts=d.hearts!=null?d.hearts:5;G.heartsRefillAt=d.heartsRefillAt||null}catch(e){}}
 function ensureSrs(id){if(!G.srs[id])G.srs[id]={interval:1,ease:2.5,due:0,reps:0};return G.srs[id]}
 function isDue(id){const r=ensureSrs(id);return !r.due||Date.now()>=r.due}
 function scheduleLesson(id,acc){const r=ensureSrs(id);if(acc>=85){r.reps=(r.reps||0)+1;r.ease=Math.min(3,Math.max(1.3,(r.ease||2.5)+0.1));r.interval=r.reps===1?1:r.reps===2?3:Math.round((r.interval||1)*r.ease)}else{r.reps=0;r.ease=Math.max(1.3,(r.ease||2.5)-0.2);r.interval=1}r.due=Date.now()+r.interval*DAY}
@@ -880,9 +880,33 @@ function updateRank(){
 
 function startApp(){
   loadG();Object.keys(L).forEach(ensureSrs);
+  // Refill hearts if timer passed
+  refillHearts();
   showScreen('home');buildHome();
   if(!G.welcomeDone)$('welcomeOv').classList.add('sh');
   else if(!G.surveyDone)$('surveyOv').classList.add('sh');
+}
+function refillHearts(){
+  if(isPro()){G.hearts=99;return}
+  if(G.heartsRefillAt&&Date.now()>=G.heartsRefillAt){G.hearts=5;G.heartsRefillAt=null;saveG()}
+  if(G.hearts<5&&!G.heartsRefillAt){G.heartsRefillAt=Date.now()+4*60*60*1000;saveG()} // refill in 4h
+}
+function useHeart(){
+  if(isPro())return true;
+  if(G.hearts<=0){
+    // Show out of hearts screen
+    $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center">
+      <div style="font-size:56px;margin-bottom:16px">💔</div>
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:8px">Out of hearts</h2>
+      <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;max-width:280px">You used all 5 hearts for today. They refill in ${G.heartsRefillAt?Math.max(0,Math.round((G.heartsRefillAt-Date.now())/3600000))+' hours':'4 hours'}.</p>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px">Or upgrade to Pro for unlimited hearts.</p>
+      <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Get Unlimited Hearts</a>
+      <button onclick="showScreen('home');buildHome()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px">Back to home</button>
+    </div>`;
+    showScreen('lesson');
+    return false;
+  }
+  G.hearts--;saveG();return true;
 }
 function dismissWelcome(){G.welcomeDone=true;saveG();$('welcomeOv').classList.remove('sh');if(!G.surveyDone)$('surveyOv').classList.add('sh')}
 function pickSurvey(el,field,val){G.surveyScores[field]=val;el.parentElement.querySelectorAll('.survey-opt').forEach(b=>b.classList.remove('sel'));el.classList.add('sel')}
@@ -938,12 +962,11 @@ function checkAchievements(){
 }
 
 function isPro(){return !!G.pro}
+function getMaxWrong(){return isPro()?999:5}
 function checkPro(id){
   if(isPro())return true;
-  // Level 1 modules are free
   const l1Ids=MAP[0].ls.map(l=>l.id);
   if(l1Ids.includes(id))return true;
-  // Show paywall
   showPaywall(id);
   return false;
 }
@@ -952,10 +975,10 @@ function showPaywall(id){
   $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center">
     <div style="font-size:56px;margin-bottom:16px">🔒</div>
     <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#ffd93d,#6c5ce7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Unlock ${ls?.n||'this module'}</h2>
-    <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;max-width:280px">Get all 30 modules, weakness tracking, and advanced strategy content with PokerTime Pro.</p>
+    <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;max-width:280px">Get all 30 modules, unlimited wrong answers, and advanced strategy with PokerTime Pro.</p>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;width:100%;max-width:280px">
       <div style="font-size:24px;font-weight:900;color:var(--accent)">$4.99<span style="font-size:14px;color:var(--text-muted);font-weight:600">/month</span></div>
-      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">All 30 modules · No limits · Cancel anytime</div>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:4px">Unlimited wrong answers · All 30 modules · Cancel anytime</div>
     </div>
     <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Upgrade to Pro</a>
     <button onclick="showScreen('home');buildHome()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px">Back to free lessons</button>
@@ -1072,7 +1095,7 @@ function checkNow(){
   else if(q.t==='tf')ok=(G.sel===0&&q.a===true)||(G.sel===1&&q.a===false);
   else if(q.t==='wb')ok=JSON.stringify(G.wbAns.map(a=>a.w))===JSON.stringify(q.answer);
   else if(q.t==='ord')ok=JSON.stringify(G.ordAns.map(a=>a.w))===JSON.stringify(q.items);
-  if(!ok){G.lives=Math.max(0,G.lives-1);renderLives();vibrate('no');setTimeout(nextQ,1500);return}
+  if(!ok){if(!useHeart())return;G.lives=Math.max(0,G.lives-1);renderLives();vibrate('no');setTimeout(nextQ,1500);return}
   G.correct++;G.done=true;combo++;
   if(!G.ach.maxCombo||combo>G.ach.maxCombo)G.ach.maxCombo=combo;
   if(q.t==='mc'||q.t==='tf'){const a=q.t==='tf'?(q.a?0:1):q.a;document.getElementById('o'+a).className='opt ok';document.querySelectorAll('.opt').forEach(b=>b.disabled=true)}
