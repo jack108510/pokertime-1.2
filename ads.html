@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PokerTime Ads — Reels</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#000;color:#fff;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px}
+h1{font-size:1.2rem;margin-bottom:4px;color:#22c55e}
+.sub{font-size:.7rem;color:#888;margin-bottom:20px}
+.ads{display:flex;flex-direction:column;gap:20px;width:100%;max-width:390px}
+.ad-card{background:#111;border-radius:16px;overflow:hidden;border:1px solid #222}
+.ad-label{padding:10px 16px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#22c55e;display:flex;justify-content:space-between;align-items:center}
+.ad-label span{color:#555;font-size:.6rem}
+.phone{width:100%;aspect-ratio:9/16;background:#0f1a0f;position:relative;overflow:hidden}
+.phone canvas{width:100%;height:100%}
+.controls{padding:12px 16px;display:flex;gap:8px}
+.play-btn{flex:1;padding:10px;border:none;border-radius:8px;background:#22c55e;color:#000;font-weight:700;font-size:.78rem;cursor:pointer}
+.play-btn:hover{background:#16a34a}
+.script{padding:12px 16px;font-size:.7rem;color:#888;line-height:1.6;border-top:1px solid #222}
+.script b{color:#ccc}
+</style>
+</head>
+<body>
+<h1>♠ PokerTime Ad Reels</h1>
+<div class="sub">Tap Play to animate · Screen-record for actual Reels</div>
+
+<div class="ads">
+
+<!-- AD 1: THE HOOK -->
+<div class="ad-card">
+<div class="ad-label">Ad #1 — "Know That Feeling?" <span>15 sec</span></div>
+<div class="phone"><canvas id="ad1"></canvas></div>
+<div class="controls"><button class="play-btn" onclick="playAd(1)">▶ Play</button></div>
+<div class="script"><b>0-3s:</b> "Know that feeling when you fold and realize you had the nuts?" (text on screen, poker card flip animation)<br><b>3-8s:</b> Show PokerTime quiz — hand comparison question, user taps correct answer, green glow + combo streak<br><b>8-12s:</b> "5 minutes a day. 30 modules. From fish to shark." — show the level progression<br><b>12-15s:</b> Logo + "Free to start. Download now" + link</div>
+</div>
+
+<!-- AD 2: THE STREAK -->
+<div class="ad-card">
+<div class="ad-label">Ad #2 — "15-Day Streak" <span>15 sec</span></div>
+<div class="phone"><canvas id="ad2"></canvas></div>
+<div class="controls"><button class="play-btn" onclick="playAd(2)">▶ Play</button></div>
+<div class="script"><b>0-3s:</b> Phone notification ping — "🔥 Your streak is on fire! 15 days"<br><b>3-8s:</b> Quick montage: tap answer → correct → XP flies → next question → correct → combo counter climbing 3x, 5x, 8x<br><b>8-12s:</b> "Build real poker instincts in 5 min/day" — show modules list scrolling<br><b>12-15s:</b> "Free. No download. Start now." + link</div>
+</div>
+
+<!-- AD 3: THE RANGE CHART -->
+<div class="ad-card">
+<div class="ad-label">Ad #3 — "What's Your Range?" <span>15 sec</span></div>
+<div class="phone"><canvas id="ad3"></canvas></div>
+<div class="controls"><button class="play-btn" onclick="playAd(3)">▶ Play</button></div>
+<div class="script"><b>0-3s:</b> "You're on the button. What do you play?" (text punches in)<br><b>3-8s:</b> Show the range chart filling in — green squares lighting up, yellow for calls, dark folds<br><b>8-12s:</b> "Learn preflop ranges, pot odds, bluffs — all gamified" — flash through 3 different quiz types<br><b>12-15s:</b> "Stop guessing. Start knowing." + logo + link</div>
+</div>
+
+<!-- AD 4: SOCIAL PROOF -->
+<div class="ad-card">
+<div class="ad-label">Ad #4 — "Fish to Shark" <span>20 sec</span></div>
+<div class="phone"><canvas id="ad4"></canvas></div>
+<div class="controls"><button class="play-btn" onclick="playAd(4)">▶ Play</button></div>
+<div class="script"><b>0-4s:</b> Rank progression animation — Fish badge appears, cracks, upgrades to Rookie → Shark → Pro<br><b>4-10s:</b> Quick-fire quiz clips: "Ace-King suited vs pocket Jacks — what do you do?" (show actual app question) → correct answer → "BOOM. Combo x5"<br><b>10-15s:</b> "30 modules. Spaced repetition. Daily challenges. Preflop ranges."<br><b>15-20s:</b> "Other apps charge $20/mo. We're free." + logo + "PokerTime" + link</div>
+</div>
+
+<!-- AD 5: THE DEMO -->
+<div class="ad-card">
+<div class="ad-label">Ad #5 — "Watch This" <span>10 sec</span></div>
+<div class="phone"><canvas id="ad5"></canvas></div>
+<div class="controls"><button class="play-btn" onclick="playAd(5)">▶ Play</button></div>
+<div class="script"><b>0-3s:</b> Screen recording style — actual app, someone taps wrong answer → big red "WRONG!" + shake<br><b>3-6s:</b> Taps correct on next one → green flash, XP particles fly, combo counter goes up<br><b>6-8s:</b> "5 min/day makes you dangerous at the table"<br><b>8-10s:</b> Logo + "Try free →" link</div>
+</div>
+
+</div>
+
+<script>
+const W=390,H=693;
+function initCanvas(id){const c=document.getElementById(id);c.width=W;c.height=H;return c.getContext('2d')}
+
+function drawBg(ctx,frame){
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#0f1a0f');g.addColorStop(1,'#0a120a');
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+}
+
+function drawCard(ctx,x,y,w,h,val,suit,color,glow){
+  if(glow){ctx.shadowColor=color==='#ff3333'?'#ff3333':'#22c55e';ctx.shadowBlur=15}
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.roundRect(x,y,w,h,6);ctx.fill();
+  ctx.shadowBlur=0;
+  ctx.fillStyle=color;ctx.font=`bold ${h*.35}px system-ui`;ctx.textAlign='center';
+  ctx.fillText(val,x+w/2,y+h*.42);
+  ctx.font=`${h*.25}px serif`;ctx.fillText(suit,x+w/2,y+h*.72);
+}
+
+function drawText(ctx,text,x,y,size,color,weight){
+  ctx.fillStyle=color||'#fff';ctx.font=`${weight||800} ${size}px system-ui`;ctx.textAlign='center';ctx.fillText(text,x,y);
+}
+
+function ease(t){return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+
+// AD 1
+function playAd(n){
+  const fns={1:ad1,2:ad2,3:ad3,4:ad4,5:ad5};
+  fns[n]();
+}
+
+function ad1(){
+  const ctx=initCanvas('ad1');
+  const fps=30,dur=15,fps_ms=1000/fps;
+  let frame=0,total=dur*fps;
+  const iv=setInterval(()=>{
+    const t=frame/total;
+    drawBg(ctx,frame);
+    
+    if(t<.2){
+      // "Know that feeling?"
+      const a=ease(Math.min(1,t/.08));
+      ctx.globalAlpha=a;
+      drawText(ctx,'Know that feeling?',W/2,H*.35,28,'#fff',800);
+      if(t>.08){
+        const a2=ease(Math.min(1,(t-.08)/.08));
+        ctx.globalAlpha=a2;
+        drawText(ctx,'when you fold the nuts?',W/2,H*.42,20,'#ffd93d',700);
+      }
+      ctx.globalAlpha=1;
+      // Show card flipping
+      const cx=W/2-30,cy=H*.55;
+      const flip=Math.min(1,(t-.1)/.08);
+      if(flip>0){
+        const scaleX=Math.abs(1-fllip*2);
+        ctx.save();ctx.translate(cx+30,cy+50);ctx.scale(scaleX,1);ctx.translate(-(cx+30),-(cy+50));
+        drawCard(ctx,cx,cy,60,100,'Ace','♠','#111',flip>.5);
+        ctx.restore();
+      }
+    }else if(t<.53){
+      // Show quiz
+      const a=ease(Math.min(1,(t-.2)/.05));
+      ctx.globalAlpha=a;
+      drawText(ctx,'Which hand wins?',W/2,H*.15,18,'#7fa87f',600);
+      // Two hands
+      drawCard(ctx,W*.12,H*.22,55,85,'Ace','♠','#111',false);
+      drawCard(ctx,W*.32,H*.22,55,85,'K','♥','#ff3333',false);
+      drawCard(ctx,W*.55,H*.22,55,85,'K','♠','#111',false);
+      drawCard(ctx,W*.75,H*.22,55,85,'K','♦','#ff3333',false);
+      // Options
+      const opts=['Ace-King','Trip Kings','Tie'];
+      opts.forEach((o,i)=>{
+        const by=H*.52+i*52;
+        const sel=t>.4&&i===1;
+        ctx.fillStyle=sel?'#22c55e':'#243024';
+        ctx.beginPath();ctx.roundRect(40,by,W-80,42,10);ctx.fill();
+        ctx.fillStyle=sel?'#fff':'#7fa87f';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+        ctx.fillText(o,W/2,by+27);
+      });
+      if(t>.4){
+        ctx.globalAlpha=1;
+        drawText(ctx,'✓ Correct! +10 XP',W/2,H*.82,16,'#22c55e',700);
+      }
+    }else if(t<.8){
+      // Level progression
+      drawText(ctx,'From Fish to Shark',W/2,H*.12,22,'#ffd93d',800);
+      const levels=['Fish','Rookie','Shark','Pro','Legend'];
+      const icons=['🐟','🃏','🦈','⭐','👑'];
+      levels.forEach((l,i)=>{
+        const y=H*.22+i*80;
+        const w=ease(Math.min(1,(t-.53-i*.03)/.05));
+        ctx.globalAlpha=w;
+        ctx.fillStyle=i<3?'#22c55e':'#243024';
+        ctx.beginPath();ctx.roundRect(30,y,W-60,60,12);ctx.fill();
+        ctx.fillStyle=i<3?'#fff':'#4a6a4a';ctx.font='bold 16px system-ui';ctx.textAlign='left';
+        ctx.fillText(`${icons[i]} ${l}`,50,y+38);
+        ctx.fillStyle=i<3?'#22c55e':'#333';ctx.textAlign='right';ctx.font='bold 13px system-ui';
+        ctx.fillText(i<3?'Complete':'Locked',W-50,y+38);
+      });
+      ctx.globalAlpha=1;
+    }else{
+      // CTA
+      drawText(ctx,'♠',W/2,H*.3,60,'#22c55e',800);
+      drawText(ctx,'PokerTime',W/2,H*.42,36,'#fff',900);
+      drawText(ctx,'Free to start',W/2,H*.5,16,'#ffd93d',600);
+      // CTA button
+      ctx.fillStyle='#22c55e';ctx.beginPath();ctx.roundRect(W/2-80,H*.58,160,48,24);ctx.fill();
+      ctx.fillStyle='#000';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+      ctx.fillText('Start Now',W/2,H*.58+31);
+    }
+    
+    frame++;
+    if(frame>=total)clearInterval(iv);
+  },fps_ms);
+}
+
+function ad2(){
+  const ctx=initCanvas('ad2');
+  const fps=30,dur=15;
+  let frame=0,total=dur*fps;
+  const iv=setInterval(()=>{
+    const t=frame/total;
+    drawBg(ctx,frame);
+    
+    if(t<.2){
+      const a=ease(Math.min(1,t/.06));
+      ctx.globalAlpha=a;
+      // Notification style
+      ctx.fillStyle='#1a2a1a';ctx.beginPath();ctx.roundRect(30,H*.28,W-60,80,14);ctx.fill();
+      ctx.strokeStyle='#22c55e';ctx.lineWidth=1;ctx.beginPath();ctx.roundRect(30,H*.28,W-60,80,14);ctx.stroke();
+      drawText(ctx,'🔥',W/2-70,H*.28+46,28,'#fff',800);
+      drawText(ctx,'Your streak is on fire!',W/2+20,H*.28+38,15,'#fff',700);
+      drawText(ctx,'15 days · Keep it going',W/2+20,H*.28+58,12,'#7fa87f',500);
+      ctx.globalAlpha=1;
+    }else if(t<.53){
+      // Combo montage
+      drawText(ctx,'What beats a flush?',W/2,H*.12,17,'#7fa87f',600);
+      drawCard(ctx,W*.15,H*.18,50,78,'A','♠','#111',false);
+      drawCard(ctx,W*.33,H*.18,50,78,'K','♠','#111',false);
+      drawCard(ctx,W*.52,H*.18,50,78,'Q','♠','#111',false);
+      drawCard(ctx,W*.70,H*.18,50,78,'J','♠','#111',false);
+      
+      // Correct answer flash
+      if(t>.35){
+        ctx.globalAlpha=ease(Math.min(1,(t-.35)/.04));
+        drawText(ctx,'✓ Full House!',W/2,H*.48,18,'#22c55e',800);
+        // XP particles
+        for(let i=0;i<6;i++){
+          const px=W/2+Math.sin(i*1.2+frame*.1)*60;
+          const py=H*.45-((t-.35)*200)+i*10;
+          ctx.fillStyle='#ffd93d';ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();
+        }
+        // Combo counter
+        const combo=Math.min(8,Math.floor((t-.35)/.03)+1);
+        drawText(ctx,`COMBO x${combo}`,W/2,H*.58,24,'#ffd93d',900);
+        ctx.globalAlpha=1;
+      }
+    }else if(t<.8){
+      drawText(ctx,'Build real poker instincts',W/2,H*.25,22,'#fff',800);
+      drawText(ctx,'in 5 min/day',W/2,H*.33,20,'#ffd93d',700);
+      // Module list scroll
+      const mods=['Hand Rankings','Pot Odds','Position Play','Bluffing','Board Texture','Preflop Ranges'];
+      mods.forEach((m,i)=>{
+        const y=H*.42+i*48-((t-.53)*120);
+        if(y>H*.38&&y<H*.8){
+          ctx.fillStyle='#1a2a1a';ctx.beginPath();ctx.roundRect(30,y,W-60,38,10);ctx.fill();
+          ctx.fillStyle='#22c55e';ctx.font='bold 13px system-ui';ctx.textAlign='left';
+          ctx.fillText(`✓ ${m}`,50,y+25);
+        }
+      });
+    }else{
+      drawText(ctx,'♠',W/2,H*.3,60,'#22c55e',800);
+      drawText(ctx,'PokerTime',W/2,H*.42,36,'#fff',900);
+      drawText(ctx,'Free · No download · Start now',W/2,H*.5,14,'#ffd93d',600);
+      ctx.fillStyle='#22c55e';ctx.beginPath();ctx.roundRect(W/2-80,H*.58,160,48,24);ctx.fill();
+      ctx.fillStyle='#000';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+      ctx.fillText('Try Free',W/2,H*.58+31);
+    }
+    
+    frame++;
+    if(frame>=total)clearInterval(iv);
+  },1000/30);
+}
+
+function ad3(){
+  const ctx=initCanvas('ad3');
+  const fps=30,dur=15;
+  let frame=0,total=dur*fps;
+  const iv=setInterval(()=>{
+    const t=frame/total;
+    drawBg(ctx,frame);
+    
+    if(t<.2){
+      const a=ease(Math.min(1,t/.06));
+      ctx.globalAlpha=a;
+      drawText(ctx,"You're on the button.",W/2,H*.3,22,'#fff',800);
+      if(t>.06){
+        const a2=ease(Math.min(1,(t-.06)/.06));
+        ctx.globalAlpha=a2;
+        drawText(ctx,'What do you play?',W/2,H*.38,20,'#ffd93d',700);
+      }
+      ctx.globalAlpha=1;
+    }else if(t<.53){
+      // Range chart filling in
+      drawText(ctx,'BUTTON — Open Range',W/2,H*.08,11,'#7fa87f',700);
+      const hands=['AA','AKs','AQs','AJs','ATs','A9s','AKo','KK','KQs','KJs','KTs','AQo','KQo','QQ','QJs','AJo','KJo','QJo','JJ','ATo','KTo','QTo','JTo','TT','A9o','K9o','Q9o','J9o','T9o','99','A8o','K8o','Q8o','J8o','T8o','88','A7o','K7o','Q7o','J7o','T7o','77','A5o','55','44','33','22'];
+      const gridStart=H*.12;const cellW=(W-20)/13;const cellH=20;
+      let idx=0;
+      for(let row=0;row<13&&idx<hands.length;row++){
+        for(let col=0;col<13&&idx<hands.length;col++,idx++){
+          const fill_t=(t-.2)/.3;
+          const show=idx/52<fill_t;
+          const isRaise=idx<42;
+          const isCall=idx>=42&&idx<48;
+          const x=10+col*cellW;const y=gridStart+row*cellH;
+          ctx.globalAlpha=show?1:.15;
+          ctx.fillStyle=isRaise?'#22c55e':isCall?'#ffd93d':'#1a2a1a';
+          ctx.beginPath();ctx.roundRect(x+1,y+1,cellW-2,cellH-2,3);ctx.fill();
+          if(show){
+            ctx.fillStyle=isRaise?'#fff':isCall?'#000':'#4a6a4a';
+            ctx.font='bold 8px system-ui';ctx.textAlign='center';
+            ctx.fillText(hands[idx],x+cellW/2,y+cellH*.72);
+          }
+        }
+      }
+      ctx.globalAlpha=1;
+    }else if(t<.8){
+      drawText(ctx,'Learn preflop ranges,',W/2,H*.25,20,'#fff',800);
+      drawText(ctx,'pot odds, bluffs —',W/2,H*.33,20,'#fff',800);
+      drawText(ctx,'all gamified.',W/2,H*.41,20,'#ffd93d',700);
+    }else{
+      drawText(ctx,'Stop guessing.',W/2,H*.28,26,'#fff',900);
+      drawText(ctx,'Start knowing.',W/2,H*.36,26,'#22c55e',900);
+      ctx.fillStyle='#22c55e';ctx.beginPath();ctx.roundRect(W/2-80,H*.48,160,48,24);ctx.fill();
+      ctx.fillStyle='#000';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+      ctx.fillText('♠ PokerTime',W/2,H*.48+31);
+    }
+    
+    frame++;
+    if(frame>=total)clearInterval(iv);
+  },1000/30);
+}
+
+function ad4(){
+  const ctx=initCanvas('ad4');
+  const fps=30,dur=20;
+  let frame=0,total=dur*fps;
+  const iv=setInterval(()=>{
+    const t=frame/total;
+    drawBg(ctx,frame);
+    
+    if(t<.2){
+      // Rank progression
+      const ranks=['🐟 Fish','🃏 Rookie','🦈 Shark','⭐ Pro','👑 Legend'];
+      const current=Math.min(4,Math.floor(t/.04));
+      const prog=(t%.04)/.04;
+      ranks.forEach((r,i)=>{
+        const y=H*.2+i*75;
+        const active=i<=current;
+        const isCurrent=i===current;
+        ctx.globalAlpha=active?1:.3;
+        const w=isCurrent?ease(prog):1;
+        ctx.fillStyle=active?'#22c55e':'#1a2a1a';
+        ctx.beginPath();ctx.roundRect(30,y,(W-60)*w,55,12);ctx.fill();
+        if(active){
+          ctx.fillStyle='#fff';ctx.font='bold 18px system-ui';ctx.textAlign='left';
+          ctx.fillText(r,50,y+36);
+        }
+      });
+      ctx.globalAlpha=1;
+    }else if(t<.5){
+      // Quick quiz
+      drawText(ctx,'Ace-King suited vs pocket Jacks',W/2,H*.12,14,'#7fa87f',600);
+      drawCard(ctx,W*.1,H*.18,55,85,'A','♠','#111',false);
+      drawCard(ctx,W*.3,H*.18,55,85,'K','♠','#111',false);
+      ctx.fillStyle='#ffd93d';ctx.font='bold 20px system-ui';ctx.textAlign='center';
+      ctx.fillText('VS',W/2,H*.25);
+      drawCard(ctx,W*.55,H*.18,55,85,'J','♥','#ff3333',false);
+      drawCard(ctx,W*.75,H*.18,55,85,'J','♦','#ff3333',false);
+      
+      if(t>.35){
+        drawText(ctx,'Call — JJ is 57% favorite',W/2,H*.48,15,'#22c55e',700);
+        const combo=Math.min(5,Math.floor((t-.35)/.03)+1);
+        drawText(ctx,`COMBO x${combo}`,W/2,H*.56,22,'#ffd93d',900);
+        // XP burst
+        for(let i=0;i<8;i++){
+          const angle=i*Math.PI/4+frame*.05;
+          const dist=30+((t-.35)*80);
+          ctx.fillStyle='#ffd93d';ctx.beginPath();ctx.arc(W/2+Math.cos(angle)*dist,H*.53+Math.sin(angle)*dist,3,0,Math.PI*2);ctx.fill();
+        }
+      }
+    }else if(t<.75){
+      drawText(ctx,'30 Modules',W/2,H*.2,20,'#fff',800);
+      drawText(ctx,'Spaced Repetition',W/2,H*.28,20,'#22c55e',800);
+      drawText(ctx,'Daily Challenges',W/2,H*.36,20,'#22c55e',800);
+      drawText(ctx,'Preflop Range Charts',W/2,H*.44,20,'#22c55e',800);
+      drawText(ctx,'Combo Streaks',W/2,H*.52,20,'#ffd93d',800);
+    }else{
+      drawText(ctx,'Others charge $20/mo.',W/2,H*.3,18,'#7fa87f',600);
+      drawText(ctx,'We\'re free.',W/2,H*.38,28,'#22c55e',900);
+      ctx.fillStyle='#22c55e';ctx.beginPath();ctx.roundRect(W/2-80,H*.48,160,48,24);ctx.fill();
+      ctx.fillStyle='#000';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+      ctx.fillText('♠ PokerTime — Free',W/2,H*.48+31);
+    }
+    
+    frame++;
+    if(frame>=total)clearInterval(iv);
+  },1000/30);
+}
+
+function ad5(){
+  const ctx=initCanvas('ad5');
+  const fps=30,dur=10;
+  let frame=0,total=dur*fps;
+  const iv=setInterval(()=>{
+    const t=frame/total;
+    drawBg(ctx,frame);
+    
+    if(t<.3){
+      // Wrong answer
+      drawText(ctx,'What position is best?',W/2,H*.15,16,'#7fa87f',600);
+      const opts=['UTG','Button','Big Blind'];
+      const wrong=t<.15;
+      const correct=t>=.15;
+      opts.forEach((o,i)=>{
+        const y=H*.28+i*55;
+        const isWrong=i===0&&wrong;
+        const isCorrect=i===1&&correct;
+        ctx.fillStyle=isCorrect?'#22c55e':isWrong?'#ef4444':'#243024';
+        if(isWrong){ctx.shadowColor='#ef4444';ctx.shadowBlur=20}
+        ctx.beginPath();ctx.roundRect(40,y,W-80,42,10);ctx.fill();
+        ctx.shadowBlur=0;
+        ctx.fillStyle=isCorrect?'#fff':isWrong?'#fff':'#7fa87f';ctx.font='bold 16px system-ui';ctx.textAlign='center';
+        ctx.fillText(o,W/2,y+27);
+      });
+      if(t>.05&&t<.15){
+        drawText(ctx,'✗ WRONG!',W/2,H*.65,24,'#ef4444',900);
+        const shake=Math.sin(frame*2)*6;
+        ctx.save();ctx.translate(shake,0);ctx.restore();
+      }
+      if(t>=.15){
+        drawText(ctx,'✓ Correct! +10 XP',W/2,H*.65,16,'#22c55e',700);
+      }
+    }else if(t<.6){
+      // Correct answer with combo
+      drawText(ctx,'Ace-high flush beats...',W/2,H*.12,16,'#7fa87f',600);
+      drawCard(ctx,W*.15,H*.18,50,78,'A','♥','#ff3333',false);
+      drawCard(ctx,W*.35,H*.18,50,78,'K','♥','#ff3333',false);
+      drawCard(ctx,W*.55,H*.18,50,78,'Q','♥','#ff3333',false);
+      drawCard(ctx,W*.75,H*.18,50,78,'J','♥','#ff3333',false);
+      if(t>.4){
+        drawText(ctx,'✓ King-high straight flush!',W/2,H*.48,15,'#22c55e',700);
+        const combo=Math.min(8,Math.floor((t-.4)/.02)+1);
+        drawText(ctx,`x${combo} COMBO`,W/2,H*.56,24,'#ffd93d',900);
+        for(let i=0;i<10;i++){
+          const px=W/2+Math.sin(i+frame*.15)*80;
+          const py=H*.5-((t-.4)*120)+i*8;
+          ctx.fillStyle='#ffd93d';ctx.beginPath();ctx.arc(px,py,3,0,Math.PI*2);ctx.fill();
+        }
+      }
+    }else if(t<.8){
+      drawText(ctx,'5 min/day',W/2,H*.3,24,'#fff',800);
+      drawText(ctx,'makes you dangerous',W/2,H*.38,22,'#22c55e',800);
+      drawText(ctx,'at the table.',W/2,H*.46,22,'#22c55e',800);
+    }else{
+      ctx.fillStyle='#22c55e';ctx.beginPath();ctx.roundRect(W/2-90,H*.38,180,52,26);ctx.fill();
+      ctx.fillStyle='#000';ctx.font='bold 18px system-ui';ctx.textAlign='center';
+      ctx.fillText('♠ Try Free →',W/2,H*.38+33);
+      drawText(ctx,'PokerTime',W/2,H*.55,16,'#7fa87f',600);
+    }
+    
+    frame++;
+    if(frame>=total)clearInterval(iv);
+  },1000/30);
+}
+</script>
+</body>
+</html>
