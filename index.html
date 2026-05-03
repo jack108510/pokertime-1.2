@@ -50,6 +50,7 @@ button,input,select{font-family:inherit;font-size:inherit}
 .intro-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--primary-glow)}
 .intro-btn:active{transform:scale(.97)}
 @keyframes fadeUp{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 
 /* TOP BAR */
 .topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,.2)}
@@ -409,6 +410,72 @@ button,input,select{font-family:inherit;font-size:inherit}
 <div class="xp-toast" id="xpToast"></div>
 
 <script>
+// POKER GLOSSARY — tap any term for definition
+const GLOSSARY={
+'fold':'To give up your hand and stop betting.',
+'call':'Match the current bet amount to stay in the hand.',
+'raise':'Increase the current bet amount.',
+'check':'Pass the action without betting (only if no bet is pending).',
+'bluff':'Betting with a weak hand to make opponents fold better hands.',
+'pot':'Total chips wagered in the current hand.',
+'pot odds':'Ratio of the current pot size to the cost of a call. Tells you if a call is profitable.',
+'equity':'Your share of the pot based on how often your hand wins.',
+'range':'The set of hands your opponent could have based on their actions.',
+'GTO':'Game Theory Optimal — a strategy that cannot be exploited.',
+'exploit':'A strategy that targets specific opponent weaknesses.',
+'position':'Where you sit relative to the dealer button. Later = better.',
+'UTG':'Under the Gun — first to act preflop (worst position).',
+'button':'Dealer button — best position, acts last postflop.',
+'cutoff':'Seat right of the button — second best position.',
+'big blind':'Forced bet by player 2 seats left of button.',
+'small blind':'Forced bet by player 1 seat left of button.',
+'flop':'First 3 community cards dealt.',
+'turn':'4th community card.',
+'river':'5th and final community card.',
+'showdown':'When remaining players reveal their cards.',
+'kicker':'Side card used to break ties when players have same main hand.',
+'outs':'Cards that improve your hand to a winner.',
+'draw':'A hand that needs more cards to become strong (e.g., flush draw).',
+'set':'Three of a kind made with a pocket pair + one community card.',
+'trips':'Three of a kind made with one hole card + two community cards.',
+'overpair':'A pocket pair higher than any community card.',
+'nut hand':'The best possible hand given the community cards.',
+'blocker':'A card in your hand that makes certain opponent hands less likely.',
+'C-bet':'Continuation bet — betting the flop after raising preflop.',
+'donk bet':'Betting into the preflop raiser (leading out).',
+'float':'Calling a bet with a weak hand, planning to bluff later.',
+'squeeze':'Reraising after a call and a raise, putting pressure on both.',
+'tilt':'Playing emotionally/badly after a bad beat or frustration.',
+'bankroll':'Total money set aside for playing poker.',
+'MDF':'Minimum Defense Frequency — how often you must defend to prevent opponent from profiting with any two cards.',
+'$EV':'Dollar expected value — the real-money value of a tournament decision.',
+'ICM':'Independent Chip Model — converts tournament chips to real dollar value.',
+'shove':'Going all-in (betting all your chips).',
+'3-bet':'Reraising the initial raiser.',
+'4-bet':'Reraising a 3-bet.',
+'open-raise':'Being the first to enter the pot with a raise.',
+'limp':'Just calling the big blind preflop (generally weak).',
+'split pot':'Tied hands share the pot equally.',
+'side pot':'Separate pot created when one player is all-in.',
+'showdown value':'A hand strong enough to win at showdown but not strong enough to raise.',
+'wet board':'Community cards with many draw possibilities (flush + straight draws).',
+'dry board':'Community cards with few draw possibilities.',
+'value bet':'Betting with a strong hand to get called by worse hands.',
+'semi-bluff':'Bluffing with a draw that could improve to the best hand.',
+};
+
+function showDef(term){
+  const def=GLOSSARY[term.toLowerCase().replace(/[^a-z0-9$]/g,'')];
+  if(!def)return;
+  const existing=document.getElementById('defPopup');
+  if(existing)existing.remove();
+  const popup=document.createElement('div');
+  popup.id='defPopup';
+  popup.style.cssText='position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:2px solid var(--primary);padding:16px 20px 24px;z-index:50;animation:slideUp .2s ease';
+  popup.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:.9rem;font-weight:900;color:var(--primary)">${term}</span><button onclick="document.getElementById('defPopup').remove()" style="background:none;border:none;color:var(--text-muted);font-size:20px;cursor:pointer">×</button></div><div style="font-size:.82rem;color:var(--text-muted);line-height:1.6">${def}</div>`;
+  document.body.appendChild(popup);
+}
+
 const G={xp:0,lives:3,streak:0,chips:250,q:0,correct:0,sel:null,done:false,t0:0,lesson:null,completed:{},mSel:null,mMatched:[],srs:{},lastStudyDay:null,surveyDone:false,surveyScores:{svPlay:null,svRank:null,svOdds:null},weak:{},ach:{},welcomeDone:false,pro:false,hearts:5,heartsRefillAt:null};
 const DAY=24*60*60*1000;
 const SRS_KEY='pokertime_save_v2';
@@ -773,6 +840,10 @@ function buildHome(){
   const due=Object.keys(L).filter(isDue).length;
   let h='';
   if(due>0)h+=`<div class="due-banner" onclick="dailyReview()"><div class="db-ico">📌</div><div class="db-info"><div class="db-title">Daily Review</div><div class="db-sub">${due} lesson${due>1?'s':''} due for review</div></div><div class="db-arrow">→</div></div>`;
+  // Daily challenge
+  const dayKey=todayKey();
+  const challengeDone=G.ach['daily_'+dayKey];
+  h+=`<div class="due-banner" style="border-color:var(--accent);margin-bottom:10px" onclick="${challengeDone?'':'dailyChallenge()'}"><div class="db-ico">🏆</div><div class="db-info"><div class="db-title">Daily Challenge</div><div class="db-sub">${challengeDone?'Completed! +50 XP':'+50 XP bonus · Today only'}</div></div><div class="db-arrow">${challengeDone?'✓':'→'}</div></div>`;
   MAP.forEach(sec=>{
     h+=`<div class="path-section"><div class="path-label">${sec.lvl}</div>`;
     sec.ls.forEach(l=>{
@@ -1151,6 +1222,45 @@ function showComp(){
 function finishL(){buildHome();showScreen('home')}
 function closeStreak(){$('streakOv').classList.remove('sh')}
 function showStreak(){$('streakOv').classList.add('sh');$('sNum').textContent=G.streak}
+
+// DAILY CHALLENGE — a random tough question for bonus XP
+function dailyChallenge(){
+  const dayKey=todayKey();
+  if(G.ach['daily_'+dayKey]){alert('Already completed today!');return}
+  // Pick a random hard question
+  const hardModules=['bluffing','pot-odds','position-play','reading-hands','range-construction','board-texture'];
+  const mod=hardModules[Math.floor(Math.random()*hardModules.length)];
+  if(!L[mod]){alert('No challenge available yet');return}
+  const q=L[mod][Math.floor(Math.random()*L[mod].length)];
+  // Show it as a popup
+  const existing=document.getElementById('defPopup');if(existing)existing.remove();
+  const popup=document.createElement('div');
+  popup.id='defPopup';
+  popup.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:70;display:flex;flex-direction:column;padding:40px 24px;animation:fadeUp .3s ease';
+  let opts=q.t==='mc'?q.o:q.t==='tf'?['True','False']:[];
+  popup.innerHTML=`<div style="text-align:center;margin-bottom:8px"><span style="font-size:10px;font-weight:800;color:var(--accent);letter-spacing:3px;text-transform:uppercase">Daily Challenge</span></div>
+    <div style="font-size:20px;font-weight:900;text-align:center;margin-bottom:24px;line-height:1.4">${q.p}</div>
+    <div class="opts">${opts.map((o,i)=>`<button class="opt" onclick="answerDaily(${i},${q.t==='tf'?q.a:i===q.a?1:0})">${o}</button>`).join('')}</div>
+    <button onclick="document.getElementById('defPopup').remove()" style="margin-top:20px;background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer">Skip</button>`;
+  document.body.appendChild(popup);
+}
+function answerDaily(idx,correct){
+  const dayKey=todayKey();
+  const popup=document.getElementById('defPopup');
+  const btns=popup.querySelectorAll('.opt');
+  btns.forEach((b,i)=>{
+    b.style.pointerEvents='none';
+    if(i===correct)b.style.cssText+=';border-color:var(--success);background:var(--success-dim);color:var(--success)';
+    else if(i===idx)b.style.cssText+=';border-color:var(--danger);background:var(--danger-dim);color:var(--danger)';
+  });
+  if(idx===correct||(typeof correct==='boolean'&&((idx===0&&correct)||(idx===1&&!correct)))){
+    G.xp+=50;G.ach['daily_'+dayKey]=true;saveG();
+    setTimeout(()=>{popup.remove();buildHome()},1500);
+  }else{
+    G.ach['daily_'+dayKey]=true;saveG();
+    setTimeout(()=>popup.remove(),2000);
+  }
+}
 
 // Haptic + Sound
 function vibrate(type){
