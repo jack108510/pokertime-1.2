@@ -1076,8 +1076,8 @@ function loadQ(){
 }
 
 function selMC(i){if(G.done)return;G.sel=i;document.querySelectorAll('.opt').forEach((b,j)=>b.className='opt'+(j===i?' sel':''));checkNow()}
-function selWB(i,w){if(G.done)return;const el=$('w'+i);if(el.classList.contains('used'))return;el.classList.add('used');G.wbAns.push({w,i});const aa=$('ansArea');aa.innerHTML=G.wbAns.map(a=>`<span class="wb-word" style="opacity:1">${a.w}</span>`).join('');aa.className='ans-area filled';checkNow()}
-function selOrd(i,w){if(G.done)return;const el=$('w'+i);if(el.classList.contains('used'))return;el.classList.add('used');G.ordAns.push({w,i});const aa=$('ansArea');aa.innerHTML=G.ordAns.map(a=>`<span class="wb-word" style="opacity:1;border-color:var(--primary)">${a.w}</span>`).join('');aa.className='ans-area filled';checkNow()}
+function selWB(i,w){if(G.done)return;const el=$('w'+i);if(el.classList.contains('used'))return;el.classList.add('used');G.wbAns.push({w,i});const aa=$('ansArea');aa.innerHTML=G.wbAns.map(a=>`<span class="wb-word" style="opacity:1">${a.w}</span>`).join('');aa.className='ans-area filled';const q=L[G.lesson][G.q];if(G.wbAns.length===q.answer.length)checkNow()}
+function selOrd(i,w){if(G.done)return;const el=$('w'+i);if(el.classList.contains('used'))return;el.classList.add('used');G.ordAns.push({w,i});const aa=$('ansArea');aa.innerHTML=G.ordAns.map(a=>`<span class="wb-word" style="opacity:1;border-color:var(--primary)">${a.w}</span>`).join('');aa.className='ans-area filled';const q=L[G.lesson][G.q];if(G.ordAns.length===q.items.length)checkNow()}
 
 function selMatch(side,idx,val){
   if(G.done)return;if(G.mMatched.includes(val))return;
