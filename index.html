@@ -20,13 +20,13 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
---bg:#13111c;--surface:#1e1b2e;--surface2:#2a2640;--surface3:#352f4a;
---primary:#6c5ce7;--primary-dark:#5a4bd1;--primary-glow:rgba(108,92,231,.25);
+--bg:#0f1a0f;--surface:#1a2a1a;--surface2:#243024;--surface3:#2d3a2d;
+--primary:#22c55e;--primary-dark:#16a34a;--primary-glow:rgba(34,197,94,.25);
 --accent:#ffd93d;--accent-dim:rgba(255,217,61,.15);
---success:#00b894;--success-dim:rgba(0,184,148,.15);
---danger:#e17055;--danger-dim:rgba(225,112,85,.15);
---text:#f0edff;--text-muted:#8b85a6;--text-dim:#5a5478;
---border:#2d2945;--radius:16px;
+--success:#22c55e;--success-dim:rgba(34,197,94,.15);
+--danger:#ef4444;--danger-dim:rgba(239,68,68,.15);
+--text:#e8f5e8;--text-muted:#7fa87f;--text-dim:#4a6a4a;
+--border:#2a3a2a;--radius:16px;
 }
 html,body{height:100%;overflow:hidden}
 body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;line-height:1.5}
@@ -39,14 +39,14 @@ button,input,select{font-family:inherit;font-size:inherit}
 
 /* INTRO */
 .intro{background:var(--bg);align-items:center;justify-content:center;text-align:center;padding:40px 24px;position:relative}
-.intro-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(108,92,231,.15),transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none}
-.intro-chip{width:88px;height:88px;border-radius:50%;background:conic-gradient(from 0deg,var(--primary) 0deg,var(--primary) 30deg,var(--surface2) 30deg,var(--surface2) 60deg,var(--primary) 60deg,var(--primary) 90deg,var(--surface2) 90deg,var(--surface2) 120deg,var(--primary) 120deg,var(--primary) 150deg,var(--surface2) 150deg,var(--surface2) 180deg,var(--primary) 180deg,var(--primary) 210deg,var(--surface2) 210deg,var(--surface2) 240deg,var(--primary) 240deg,var(--primary) 270deg,var(--surface2) 270deg,var(--surface2) 300deg,var(--primary) 300deg,var(--primary) 330deg,var(--surface2) 330deg,var(--surface2) 360deg);display:flex;align-items:center;justify-content:center;animation:chipSpin 1.5s cubic-bezier(.22,1,.36,1) forwards;opacity:0;margin-bottom:32px;box-shadow:0 0 40px var(--primary-glow);border:3px solid rgba(108,92,231,.3)}
+.intro-glow{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,.15),transparent 70%);top:50%;left:50%;transform:translate(-50%,-60%);pointer-events:none}
+.intro-chip{width:88px;height:88px;border-radius:50%;background:conic-gradient(from 0deg,var(--primary) 0deg,var(--primary) 30deg,var(--surface2) 30deg,var(--surface2) 60deg,var(--primary) 60deg,var(--primary) 90deg,var(--surface2) 90deg,var(--surface2) 120deg,var(--primary) 120deg,var(--primary) 150deg,var(--surface2) 150deg,var(--surface2) 180deg,var(--primary) 180deg,var(--primary) 210deg,var(--surface2) 210deg,var(--surface2) 240deg,var(--primary) 240deg,var(--primary) 270deg,var(--surface2) 270deg,var(--surface2) 300deg,var(--primary) 300deg,var(--primary) 330deg,var(--surface2) 330deg,var(--surface2) 360deg);display:flex;align-items:center;justify-content:center;animation:chipSpin 1.5s cubic-bezier(.22,1,.36,1) forwards;opacity:0;margin-bottom:32px;box-shadow:0 0 40px var(--primary-glow);border:3px solid rgba(34,197,94,.3)}
 .intro-chip-inner{width:52px;height:52px;border-radius:50%;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;color:var(--primary)}
 @keyframes chipSpin{0%{transform:rotateY(0) scale(.5);opacity:0}50%{opacity:1}100%{transform:rotateY(1080deg) scale(1);opacity:1}}
 .intro h1{font-size:36px;font-weight:900;letter-spacing:4px;color:var(--text);margin-bottom:8px;animation:fadeUp .8s ease forwards;opacity:0;animation-delay:.8s}
 .intro h1 span{color:var(--accent)}
 .intro-sub{color:var(--text-muted);font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:40px;animation:fadeUp .8s ease forwards;opacity:0;animation-delay:1.2s}
-.intro-btn{animation:fadeUp .8s ease forwards;opacity:0;animation-delay:1.6s;padding:18px 56px;font-size:16px;font-weight:800;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;border:none;border-radius:50px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;box-shadow:0 6px 24px var(--primary-glow);transition:all .2s}
+.intro-btn{animation:fadeUp .8s ease forwards;opacity:0;animation-delay:1.6s;padding:18px 56px;font-size:16px;font-weight:800;background:linear-gradient(135deg,var(--primary),#16a34a);color:#fff;border:none;border-radius:50px;cursor:pointer;letter-spacing:1px;text-transform:uppercase;box-shadow:0 6px 24px var(--primary-glow);transition:all .2s}
 .intro-btn:hover{transform:translateY(-2px);box-shadow:0 8px 32px var(--primary-glow)}
 .intro-btn:active{transform:scale(.97)}
 @keyframes fadeUp{0%{opacity:0;transform:translateY(16px)}100%{opacity:1;transform:translateY(0)}}
@@ -77,7 +77,7 @@ button,input,select{font-family:inherit;font-size:inherit}
 .path-section{margin-bottom:8px}
 .path-label{font-size:11px;font-weight:800;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;text-align:center}
 .path-node{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:8px;cursor:pointer;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.path-node:hover{border-color:var(--primary);background:var(--surface2);box-shadow:0 4px 16px rgba(108,92,231,.12)}
+.path-node:hover{border-color:var(--primary);background:var(--surface2);box-shadow:0 4px 16px rgba(34,197,94,.12)}
 .path-node:active{transform:scale(.98)}
 .path-node.completed{border-color:var(--success);background:var(--success-dim)}
 .path-node.locked{opacity:.4;cursor:default;pointer-events:none}
@@ -152,8 +152,8 @@ button,input,select{font-family:inherit;font-size:inherit}
 /* FEEDBACK */
 .feedback{position:absolute;bottom:0;left:0;right:0;padding:14px 20px 18px;display:none;align-items:center;gap:12px;z-index:10;border-top:2px solid var(--border);background:var(--surface)}
 .feedback.sh{display:flex}
-.feedback.ok{border-top-color:var(--success);background:linear-gradient(0deg,rgba(0,184,148,.1),var(--surface))}
-.feedback.no{border-top-color:var(--danger);background:linear-gradient(0deg,rgba(225,112,85,.1),var(--surface))}
+.feedback.ok{border-top-color:var(--success);background:linear-gradient(0deg,rgba(34,197,94,.1),var(--surface))}
+.feedback.no{border-top-color:var(--danger);background:linear-gradient(0deg,rgba(239,68,68,.1),var(--surface))}
 .fb-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;flex-shrink:0}
 .feedback.ok .fb-icon{background:var(--success-dim);color:var(--success)}
 .feedback.no .fb-icon{background:var(--danger-dim);color:var(--danger)}
@@ -971,7 +971,7 @@ function useHeart(){
       <h2 style="font-size:22px;font-weight:900;margin-bottom:8px">Out of hearts</h2>
       <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:12px;max-width:280px">You used all 5 hearts for today. They refill in ${G.heartsRefillAt?Math.max(0,Math.round((G.heartsRefillAt-Date.now())/3600000))+' hours':'4 hours'}.</p>
       <p style="font-size:13px;color:var(--text-dim);margin-bottom:20px">Or upgrade to Pro for unlimited hearts.</p>
-      <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Get Unlimited Hearts</a>
+      <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#16a34a);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Get Unlimited Hearts</a>
       <button onclick="showScreen('home');buildHome()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px">Back to home</button>
     </div>`;
     showScreen('lesson');
@@ -1045,13 +1045,13 @@ function showPaywall(id){
   const ls=MAP.flatMap(s=>s.ls).find(l=>l.id===id);
   $('lbody').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center">
     <div style="font-size:56px;margin-bottom:16px">🔒</div>
-    <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#ffd93d,#6c5ce7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Unlock ${ls?.n||'this module'}</h2>
+    <h2 style="font-size:22px;font-weight:900;margin-bottom:8px;background:linear-gradient(135deg,#ffd93d,#22c55e);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Unlock ${ls?.n||'this module'}</h2>
     <p style="font-size:14px;color:var(--text-muted);line-height:1.6;margin-bottom:24px;max-width:280px">Get all 30 modules, unlimited wrong answers, and advanced strategy with PokerTime Pro.</p>
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:20px;width:100%;max-width:280px">
       <div style="font-size:24px;font-weight:900;color:var(--accent)">$4.99<span style="font-size:14px;color:var(--text-muted);font-weight:600">/month</span></div>
       <div style="font-size:12px;color:var(--text-dim);margin-top:4px">Unlimited wrong answers · All 30 modules · Cancel anytime</div>
     </div>
-    <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#8b5cf6);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Upgrade to Pro</a>
+    <a href="https://buy.stripe.com/pokertime-pro" target="_blank" style="display:inline-block;padding:14px 36px;background:linear-gradient(135deg,var(--primary),#16a34a);color:#fff;font-size:15px;font-weight:800;border-radius:50px;text-decoration:none;box-shadow:0 4px 20px var(--primary-glow);margin-bottom:14px">Upgrade to Pro</a>
     <button onclick="showScreen('home');buildHome()" style="background:none;border:none;color:var(--text-dim);font-size:13px;cursor:pointer;padding:8px">Back to free lessons</button>
   </div>`;
   showScreen('lesson');
